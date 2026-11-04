@@ -44,6 +44,9 @@
 
   "popup_tagline": { "message": "AI चैट के लिए निजी जानकारी की सुरक्षा" },
   "popup_sites": { "message": "इन साइटों पर सुरक्षा" },
+  "popup_replies": { "message": "AI के जवाब" },
+  "popup_restore": { "message": "जवाब में असली जानकारी दिखाएँ" },
+  "popup_restore_hint": { "message": "[PAN_1] जैसे प्लेसहोल्डर सिर्फ़ आपकी स्क्रीन पर असली जानकारी में बदले जाते हैं। AI को असली जानकारी कभी नहीं दिखती।" },
   "popup_caught": { "message": "अब तक पकड़ी गई जानकारी" },
   "popup_none_caught": { "message": "अभी तक कुछ नहीं पकड़ा गया।" },
   "popup_reset": { "message": "गिनती रीसेट करें" },

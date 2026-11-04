@@ -4,7 +4,9 @@
  * Watches paste and send in the message box. If the text contains Indian PII,
  * it stops the paste or send and asks: Mask, Paste/Send anyway, or Cancel.
  * Everything happens in this page; nothing is sent anywhere. One masking
- * session per tab keeps placeholders consistent across messages in a chat.
+ * session per tab keeps placeholders consistent across messages in a chat, and
+ * lets placeholders in the AI's replies be shown with their original values
+ * again, on this screen only.
  */
 
 import { type EntityType, Kavach } from "../core/index.ts";
@@ -14,6 +16,7 @@ import { addCaught, defaults, load, onChange } from "../shared/settings.ts";
 import { looksLikeSendButton, type Site, siteForHost } from "../shared/sites.ts";
 import { countByType, summarize } from "../shared/summary.ts";
 import { close, showNotice, showWarning } from "./banner.ts";
+import { type Restorer, startRestoring } from "./restore.ts";
 import {
   appendAtEnd,
   composerFrom,
@@ -33,6 +36,7 @@ function start(site: Site): void {
   let settings = defaults();
   let bypassUntil = 0; // after "Send anyway", let the re-sent message through
   let lastComposer: HTMLElement | null = null;
+  let masked = false; // nothing to restore until this tab has masked something
 
   // When the extension is updated or reloaded, Chrome leaves this copy running
   // in already-open tabs but cuts its connection ("Extension context
@@ -72,13 +76,40 @@ function start(site: Site): void {
     );
   }
 
-  load().then((s) => (settings = s), () => {});
+  let restorer: Restorer | undefined;
+  const update = (s: typeof settings): void => {
+    settings = s;
+    restorer?.scan(); // e.g. "show real values" was just switched back on
+  };
+  load().then(update, () => {});
   try {
-    onChange((s) => (settings = s));
+    onChange(update);
   } catch {
     return; // already orphaned before it started
   }
   const enabled = () => settings.enabled[site.id];
+
+  restorer = startRestoring(
+    (placeholder) => {
+      const value = session.unmask(placeholder);
+      return value === placeholder ? undefined : value;
+    },
+    () => {
+      if (!alive()) {
+        lifetime.abort();
+        return false;
+      }
+      return masked && enabled() && settings.restore;
+    },
+    site.userMessage,
+  );
+  lifetime.signal.addEventListener("abort", () => restorer?.stop());
+
+  /** Mask text with this tab's session; placeholders in the chat can then be restored. */
+  function mask(text: string): string {
+    masked = true;
+    return session.mask(text);
+  }
 
   function record(counts: ReadonlyMap<EntityType, number>): void {
     addCaught(counts).catch(() => {});
@@ -124,7 +155,7 @@ function start(site: Site): void {
           primary: true,
           run: () => {
             restore();
-            insertAtCaret(composer, session.mask(text));
+            insertAtCaret(composer, mask(text));
             const note = t("masked_note");
             if (!hasNote(getText(composer), note)) appendAtEnd(composer, `\n${note}`);
           },
@@ -162,7 +193,7 @@ function start(site: Site): void {
         primary: true,
         run: () => {
           // Replace and let the user review; never send on their behalf after masking.
-          replaceAll(composer, withNote(session.mask(getText(composer)), t("masked_note")));
+          replaceAll(composer, withNote(mask(getText(composer)), t("masked_note")));
           showNotice(t("notice_masked"));
         },
       },

@@ -56,7 +56,7 @@
   <body>
     <main>
       <h1>Kavach Privacy Policy</h1>
-      <p class="muted">Kavach browser extension · Effective 16 October 2026</p>
+      <p class="muted">Kavach browser extension · Effective 4 November 2026</p>
 
       <div class="summary">
         <strong>In short:</strong> Kavach checks the text you paste or send on ChatGPT, Claude and
@@ -89,8 +89,16 @@
           tab's memory only and disappears when you close or reload the tab.
         </li>
         <li>
-          Kavach does not run on any other website and does not read pages, browsing history or
-          chatbot replies.
+          After you mask something, Kavach looks for its placeholders in the chatbot's replies on that
+          page, such as <code>[PAN_1]</code>, and shows the original values in their place on your
+          screen. Your own sent messages keep their placeholders, so they show what was sent. This happens only in that tab and only for
+          placeholders Kavach created there; nothing is sent to the chatbot or anyone else. The
+          values then appear in the chat page like any text you type there. You can turn this off
+          with <strong>Show real values in replies</strong> in the popup.
+        </li>
+        <li>
+          Kavach does not run on any other website and does not read your browsing history. It does
+          not store or send the chat's contents.
         </li>
       </ul>
 
@@ -102,6 +110,11 @@
           <td>On/off setting for each supported site</td>
           <td>ChatGPT: on</td>
           <td>Remembers where you want protection</td>
+        </tr>
+        <tr>
+          <td>Whether to show real values in replies</td>
+          <td>On</td>
+          <td>Remembers your choice from the popup</td>
         </tr>
         <tr>
           <td>Count of items caught, by type</td>

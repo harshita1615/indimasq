@@ -21,6 +21,8 @@ When you paste or send a message on ChatGPT, Claude or Gemini, Kavach checks it 
 • Send anyway: send it as it is.
 • Cancel: go back and edit.
 
+When the AI replies with [PAN_1] or [PHONE_1], Kavach shows the real values again on your screen, highlighted, so the reply reads naturally. The AI still never sees them. You can turn this off in the popup.
+
 WHAT IT DETECTS
 • Aadhaar numbers (checked with the official Verhoeff check digit)
 • PAN
@@ -70,12 +72,12 @@ Kavach warns users before they send Indian personal data (Aadhaar, PAN, UPI ID, 
 
 **Permission justification: storage**
 ```
-Saves the user's on/off choice for each supported site and the number of items caught per type (for example "PAN: 3"), shown in the popup. Only these flags and counts are stored, locally on the device. No message text or personal data is stored.
+Saves the user's on/off choice for each supported site, whether to show real values in replies, and the number of items caught per type (for example "PAN: 3"), shown in the popup. Only these flags and counts are stored, locally on the device. No message text or personal data is stored.
 ```
 
 **Permission justification: host permissions (content script on chatgpt.com, claude.ai, gemini.google.com)**
 ```
-The extension must read the text in the message box on these three AI chat sites at the moment the user pastes or sends, to check it for personal data and offer to mask it before it is submitted. It runs on no other sites. All processing happens locally; nothing is transmitted.
+The extension must read the text in the message box on these three AI chat sites at the moment the user pastes or sends, to check it for personal data and offer to mask it before it is submitted. After masking, it also reads the chat on that page to find its own placeholders (such as [PAN_1]) and show the original values in their place, on the user's screen only. It runs on no other sites. All processing happens locally; nothing is transmitted.
 ```
 
 **Are you using remote code?** No, I am not using remote code.

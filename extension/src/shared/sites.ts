@@ -15,6 +15,9 @@ export interface Site {
   readonly composer: readonly string[];
   /** Send button, most specific first. */
   readonly send: readonly string[];
+  /** The user's own sent messages. They keep their placeholders, so the chat
+   * shows exactly what was sent; only the AI's replies are restored. */
+  readonly userMessage: readonly string[];
 }
 
 export const SITES: readonly Site[] = [
@@ -24,6 +27,7 @@ export const SITES: readonly Site[] = [
     hosts: ["chatgpt.com"],
     composer: ["#prompt-textarea", "form [contenteditable='true']", "form textarea"],
     send: ["button[data-testid='send-button']", "#composer-submit-button"],
+    userMessage: ["[data-message-author-role='user']"],
   },
   {
     id: "claude",
@@ -31,6 +35,7 @@ export const SITES: readonly Site[] = [
     hosts: ["claude.ai"],
     composer: ["div.ProseMirror[contenteditable='true']", "fieldset [contenteditable='true']"],
     send: ["button[aria-label='Send message']", "button[aria-label='Send Message']"],
+    userMessage: ["[data-testid='user-message']"],
   },
   {
     id: "gemini",
@@ -38,6 +43,7 @@ export const SITES: readonly Site[] = [
     hosts: ["gemini.google.com"],
     composer: ["rich-textarea .ql-editor[contenteditable='true']", "rich-textarea [contenteditable='true']"],
     send: ["button.send-button", "button[aria-label='Send message']"],
+    userMessage: ["user-query"],
   },
 ];
 

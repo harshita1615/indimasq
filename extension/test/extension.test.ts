@@ -5,6 +5,7 @@ import { test } from "node:test";
 import { Kavach } from "../src/core/index.ts";
 import { looksLikeSendButton, SITES, siteForHost } from "../src/shared/sites.ts";
 import { hasNote, withNote } from "../src/shared/note.ts";
+import { restorePlaceholders } from "../src/shared/restore.ts";
 import { merge } from "../src/shared/settings.ts";
 import { countByType, summarize } from "../src/shared/summary.ts";
 
@@ -71,6 +72,10 @@ test("every entity type has singular and plural names in every locale", () => {
 });
 
 // --- sites ---------------------------------------------------------------------------
+
+test("every site says where the user's own messages are, so they keep their placeholders", () => {
+  for (const site of SITES) assert.ok(site.userMessage.length > 0, site.id);
+});
 
 test("siteForHost", () => {
   assert.equal(siteForHost("chatgpt.com")?.id, "chatgpt");
@@ -140,4 +145,53 @@ test("settings merge fills defaults and ignores junk", () => {
   assert.deepEqual(s.enabled, { chatgpt: true, claude: false, gemini: true });
   assert.deepEqual(s.caught, { PAN: 3 });
   assert.deepEqual(merge("nonsense").caught, {});
+});
+
+test("settings: showing real values in replies is on by default and can be turned off", () => {
+  assert.equal(merge(undefined).restore, true);
+  assert.equal(merge({ restore: false }).restore, false);
+  assert.equal(merge({ restore: "yes" }).restore, true);
+});
+
+// --- restoring replies ---------------------------------------------------------------
+
+function sessionLookup() {
+  const session = new Kavach().session();
+  const masked = session.mask("My PAN is ABCPE1234F, refund to rahul@okaxis");
+  const lookup = (p: string) => {
+    const v = session.unmask(p);
+    return v === p ? undefined : v;
+  };
+  return { masked, lookup };
+}
+
+test("restore swaps this tab's placeholders back and reports where", () => {
+  const { masked, lookup } = sessionLookup();
+  assert.equal(masked, "My PAN is [PAN_1], refund to [UPI_1]");
+  const reply = "Refund for [PAN_1] will go to [UPI_1].";
+  const { text, spans } = restorePlaceholders(reply, lookup);
+  assert.equal(text, "Refund for ABCPE1234F will go to rahul@okaxis.");
+  assert.deepEqual(
+    spans.map(([a, b]) => text.slice(a, b)),
+    ["ABCPE1234F", "rahul@okaxis"],
+  );
+});
+
+test("restore tolerates small edits by the AI and leaves unknown placeholders alone", () => {
+  const { lookup } = sessionLookup();
+  const { text, spans } = restorePlaceholders("[pan_1], [ UPI_1 ] and [PHONE_9]", lookup);
+  assert.equal(text, "ABCPE1234F, rahul@okaxis and [PHONE_9]");
+  assert.equal(spans.length, 2);
+});
+
+test("restore without placeholders returns the same text", () => {
+  const { lookup } = sessionLookup();
+  const plain = "No placeholders here, just [brackets].";
+  assert.deepEqual(restorePlaceholders(plain, lookup), { text: plain, spans: [] });
+});
+
+test("a fresh session restores nothing", () => {
+  const session = new Kavach().session();
+  const lookup = (p: string) => (session.unmask(p) === p ? undefined : session.unmask(p));
+  assert.equal(restorePlaceholders("[PAN_1]", lookup).text, "[PAN_1]");
 });

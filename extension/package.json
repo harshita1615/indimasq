@@ -1,6 +1,6 @@
 {
   "name": "kavach-extension",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Kavach browser extension: warns before Indian PII is sent to AI chatbots. Runs fully on-device.",
   "license": "MIT",

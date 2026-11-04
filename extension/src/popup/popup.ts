@@ -14,8 +14,16 @@ const sitesList = document.getElementById("sites")!;
 const caughtList = document.getElementById("caught")!;
 const none = document.getElementById("none")!;
 const reset = document.getElementById("reset")!;
+const restore = document.getElementById("restore") as HTMLInputElement;
+
+restore.addEventListener("change", async () => {
+  const latest = await load();
+  latest.restore = restore.checked;
+  await save(latest);
+});
 
 function render(settings: Settings): void {
+  restore.checked = settings.restore;
   sitesList.replaceChildren(
     ...SITES.map((site) => {
       const li = document.createElement("li");

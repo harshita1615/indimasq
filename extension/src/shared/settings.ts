@@ -1,8 +1,8 @@
 /**
  * Settings and counters in chrome.storage.local.
  *
- * Stored: an on/off flag per site, and how many items of each type were
- * caught. Never any text, value or URL.
+ * Stored: an on/off flag per site, whether to show real values in replies, and
+ * how many items of each type were caught. Never any text, value or URL.
  */
 
 import type { EntityType } from "../core/index.ts";
@@ -10,6 +10,8 @@ import { SITES, type Site } from "./sites.ts";
 
 export interface Settings {
   enabled: Record<Site["id"], boolean>;
+  /** Swap placeholders in the chat back to the original values, on screen only. */
+  restore: boolean;
   caught: Partial<Record<EntityType, number>>;
 }
 
@@ -18,6 +20,7 @@ const KEY = "kavach";
 export function defaults(): Settings {
   return {
     enabled: Object.fromEntries(SITES.map((s) => [s.id, true])) as Settings["enabled"],
+    restore: true,
     caught: {},
   };
 }
@@ -28,6 +31,7 @@ export function merge(stored: unknown): Settings {
   const s = stored as Partial<Settings>;
   return {
     enabled: { ...base.enabled, ...(s.enabled ?? {}) },
+    restore: typeof s.restore === "boolean" ? s.restore : base.restore,
     caught: { ...(s.caught ?? {}) },
   };
 }

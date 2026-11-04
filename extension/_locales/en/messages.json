@@ -44,6 +44,9 @@
 
   "popup_tagline": { "message": "Indian PII shield for AI chats" },
   "popup_sites": { "message": "Protect these sites" },
+  "popup_replies": { "message": "AI replies" },
+  "popup_restore": { "message": "Show real values in replies" },
+  "popup_restore_hint": { "message": "Placeholders like [PAN_1] are swapped back on your screen only. The AI never sees the real values." },
   "popup_caught": { "message": "Items caught so far" },
   "popup_none_caught": { "message": "Nothing caught yet." },
   "popup_reset": { "message": "Reset counts" },
