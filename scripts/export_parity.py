@@ -16,14 +16,14 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from kavach import Kavach
-from kavach.validators import gstin_checksum, verhoeff
+from indimasq import IndiMasq
+from indimasq.validators import gstin_checksum, verhoeff
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "extension" / "test" / "fixtures" / "parity.json"
 DATASETS = [
-    ROOT / "benchmark" / "dataset" / "kavach_bench_v1.jsonl",
-    ROOT / "benchmark" / "dataset" / "kavach_bench_v1_holdout.jsonl",
+    ROOT / "benchmark" / "dataset" / "indimasq_bench_v1.jsonl",
+    ROOT / "benchmark" / "dataset" / "indimasq_bench_v1_holdout.jsonl",
 ]
 
 AADHAAR = "23456789012" + verhoeff.check_digit("23456789012")
@@ -75,13 +75,13 @@ EDGE_CASES = [
 ]
 
 
-def record(k: Kavach, text: str, case_id: str) -> dict:
+def record(k: IndiMasq, text: str, case_id: str) -> dict:
     detections = [[d.entity_type.value, d.start, d.end, d.score] for d in k.scan(text)]
     return {"id": case_id, "text": text, "detections": detections, "masked": k.session().mask(text)}
 
 
 def main() -> None:
-    k = Kavach()
+    k = IndiMasq()
     cases = []
     for path in DATASETS:
         with path.open(encoding="utf-8") as f:

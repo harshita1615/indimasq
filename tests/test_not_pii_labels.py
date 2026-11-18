@@ -3,9 +3,9 @@
 import pytest
 from synthetic import AADHAAR
 
-from kavach.context import has_not_pii_label
-from kavach.engine import Engine
-from kavach.types import EntityType
+from indimasq.context import has_not_pii_label
+from indimasq.engine import Engine
+from indimasq.types import EntityType
 
 E = EntityType
 

@@ -10,9 +10,9 @@ from __future__ import annotations
 import dataclasses
 from collections.abc import Iterable
 
-from kavach.context import has_context, has_not_pii_label
-from kavach.detectors import ALL_DETECTORS, Detector
-from kavach.types import Detection, EntityType
+from indimasq.context import has_context, has_not_pii_label
+from indimasq.detectors import ALL_DETECTORS, Detector
+from indimasq.types import Detection, EntityType
 
 DEFAULT_THRESHOLD = 0.5
 CONTEXT_BOOST = 0.2

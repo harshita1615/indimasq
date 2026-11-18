@@ -10,7 +10,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
-import { Kavach } from "../src/core/index.ts";
+import { IndiMasq } from "../src/core/index.ts";
 
 interface Case {
   id: string;
@@ -28,7 +28,7 @@ function codePoints(text: string, utf16Index: number): number {
   return [...text.slice(0, utf16Index)].length;
 }
 
-const kavach = new Kavach();
+const indimasq = new IndiMasq();
 
 test("fixture covers the benchmark and edge cases", () => {
   assert.ok(fixture.cases.length > 2000);
@@ -38,7 +38,7 @@ test("fixture covers the benchmark and edge cases", () => {
 test("detections match Python for every case", () => {
   const mismatches: string[] = [];
   for (const c of fixture.cases) {
-    const actual = kavach
+    const actual = indimasq
       .scan(c.text)
       .map((d) => [d.entityType, codePoints(c.text, d.start), codePoints(c.text, d.end), d.score]);
     const same =
@@ -58,7 +58,7 @@ test("detections match Python for every case", () => {
 
 test("masked text matches Python for every case", () => {
   const mismatches = fixture.cases
-    .filter((c) => kavach.session().mask(c.text) !== c.masked)
+    .filter((c) => indimasq.session().mask(c.text) !== c.masked)
     .map((c) => c.id);
   assert.deepEqual(mismatches, []);
 });

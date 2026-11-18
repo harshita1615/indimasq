@@ -1,4 +1,4 @@
-# Kavach browser extension
+# IndiMasq browser extension
 
 Warns before Indian personal data is pasted, sent or attached (text, Word and PDF files) on
 ChatGPT, Claude or Gemini, and offers to mask it. Placeholders in the chat show their real value on
@@ -18,7 +18,7 @@ hover. Manifest V3; runs entirely on the device, with no network requests.
 | `src/background/`, `src/offscreen/` | Opens the offscreen page where PDF.js reads and redraws PDFs |
 | `src/files/` | ZIP, Word (.docx) and PDF handling, shared by the extension and the tests |
 | `src/popup/` | Toolbar popup: switches, counts and the current chat's hidden values |
-| `src/demo/` | The website demo (kavach.bigforge.tech/demo/). `npm run build:demo` bundles it into `docs/demo/demo.js`, which is committed; CI fails if it is stale |
+| `src/demo/` | The website demo (indimasq.bigforge.tech/demo/). `npm run build:demo` bundles it into `docs/demo/demo.js`, which is committed; CI fails if it is stale |
 | `_locales/` | English and Hindi strings |
 | `store/LISTING.md` | Chrome Web Store form answers |
 
@@ -29,11 +29,11 @@ npm install
 npm test            # unit, parity (vs Python) and privacy tests
 npm run typecheck
 npm run build       # -> dist/
-npm run package     # -> kavach-extension-<version>.zip
+npm run package     # -> indimasq-extension-<version>.zip
 ```
 
 Load `dist/` with **chrome://extensions → Developer mode → Load unpacked**. After rebuilding,
-click reload on the Kavach card **and reload the chatbot tabs**: Chrome does not replace an
+click reload on the IndiMasq card **and reload the chatbot tabs**: Chrome does not replace an
 extension's script in tabs that were already open.
 
 ## Keeping Python and TypeScript in step

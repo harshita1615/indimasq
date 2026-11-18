@@ -1,4 +1,4 @@
-"""Export Kavach's rule data from Python to the extension.
+"""Export IndiMasq's rule data from Python to the extension.
 
     python scripts/export_rules.py
 
@@ -16,12 +16,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from kavach import SYSTEM_PROMPT, engine
-from kavach.context import keywords_en, keywords_hi, scorer
-from kavach.context.scorer import keywords_for
-from kavach.detectors import aadhaar, bank, email, gstin, ifsc, pan, phone, upi
-from kavach.masking import placeholders
-from kavach.types import EntityType
+from indimasq import SYSTEM_PROMPT, engine
+from indimasq.context import keywords_en, keywords_hi, scorer
+from indimasq.context.scorer import keywords_for
+from indimasq.detectors import aadhaar, bank, email, gstin, ifsc, pan, phone, upi
+from indimasq.masking import placeholders
+from indimasq.types import EntityType
 
 OUT = Path(__file__).resolve().parent.parent / "extension" / "src" / "core" / "rules.json"
 

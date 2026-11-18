@@ -1,4 +1,4 @@
-// Package dist/ as kavach-extension-<version>.zip for the Chrome Web Store.
+// Package dist/ as indimasq-extension-<version>.zip for the Chrome Web Store.
 //
 //   npm run package
 //
@@ -72,6 +72,6 @@ end.writeUInt16LE(central.length / 2, 10);
 end.writeUInt32LE(centralSize, 12);
 end.writeUInt32LE(offset, 16);
 
-const out = new URL(`kavach-extension-${version}.zip`, root);
+const out = new URL(`indimasq-extension-${version}.zip`, root);
 writeFileSync(out, Buffer.concat([...local, ...central, end]));
-console.log(`wrote kavach-extension-${version}.zip (${central.length / 2} files)`);
+console.log(`wrote indimasq-extension-${version}.zip (${central.length / 2} files)`);

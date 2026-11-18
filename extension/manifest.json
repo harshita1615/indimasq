@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_ext_name__",
-  "short_name": "Kavach",
+  "short_name": "IndiMasq",
   "description": "__MSG_ext_description__",
   "version": "0.1.2",
   "default_locale": "en",
@@ -13,7 +13,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Kavach",
+    "default_title": "IndiMasq",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png"

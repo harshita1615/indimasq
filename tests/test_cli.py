@@ -6,7 +6,7 @@ import sys
 import pytest
 from synthetic import KITCHEN_SINK, PAN, UPI
 
-from kavach.cli import EXIT_CLEAN, EXIT_ERROR, EXIT_FOUND, main
+from indimasq.cli import EXIT_CLEAN, EXIT_ERROR, EXIT_FOUND, main
 
 ALL_VALUES_IN_SINK = [PAN, UPI, "rahul@example.com", "30012345678"]
 
@@ -140,12 +140,12 @@ def test_no_command_shows_usage(capsys):
     with pytest.raises(SystemExit) as exc:
         main([])
     assert exc.value.code == 2
-    assert "usage: kavach" in capsys.readouterr().err
+    assert "usage: indimasq" in capsys.readouterr().err
 
 
 def test_stdin_bom_is_ignored():
     result = subprocess.run(
-        [sys.executable, "-m", "kavach", "redact"],
+        [sys.executable, "-m", "indimasq", "redact"],
         input=f"﻿PAN {PAN}".encode(),
         capture_output=True,
     )
@@ -154,7 +154,7 @@ def test_stdin_bom_is_ignored():
 
 def test_python_dash_m(sample):
     result = subprocess.run(
-        [sys.executable, "-m", "kavach", "scan", str(sample)],
+        [sys.executable, "-m", "indimasq", "scan", str(sample)],
         capture_output=True,
         text=True,
         encoding="utf-8",

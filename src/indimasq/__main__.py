@@ -1,5 +1,5 @@
 import sys
 
-from kavach.cli import main
+from indimasq.cli import main
 
 sys.exit(main())

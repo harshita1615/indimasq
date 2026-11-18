@@ -1,18 +1,18 @@
-# Kavach
+# IndiMasq
 
 **Keep Indian personal data out of LLM prompts.**
 
-Kavach (कवच, "shield") detects Aadhaar, PAN, UPI IDs, bank details, phone numbers and more,
+IndiMasq detects Aadhaar, PAN, UPI IDs, bank details, phone numbers and more,
 replaces them with placeholders before your prompt reaches an LLM, and restores them in the
 reply. It runs locally, has no runtime dependencies, and uses deterministic rules (patterns,
 checksums and context words) rather than another model.
 
-**Website:** [kavach.bigforge.tech](https://kavach.bigforge.tech/) · **[Try it in your browser](https://kavach.bigforge.tech/demo/)**
+**Website:** [indimasq.bigforge.tech](https://indimasq.bigforge.tech/) · **[Try it in your browser](https://indimasq.bigforge.tech/demo/)**
 
 ```python
-from kavach import Kavach
+from indimasq import IndiMasq
 
-session = Kavach().session()
+session = IndiMasq().session()
 
 safe = session.mask("My PAN is ABCPE1234F, refund to rahul@okaxis")
 # 'My PAN is [PAN_1], refund to [UPI_1]'
@@ -30,23 +30,23 @@ Security reviews often block LLM features in Indian fintech, insurance and healt
 customer data would be sent to a third-party model. Generic PII tools cover some Indian IDs
 ([Microsoft Presidio](https://microsoft.github.io/presidio/) detects Aadhaar and PAN, for
 example) but miss the identifiers these apps handle most: UPI IDs, IFSC codes, bank account
-numbers, GSTINs and Indian phone formats, often written in Hinglish. Kavach fills those gaps and
+numbers, GSTINs and Indian phone formats, often written in Hinglish. IndiMasq fills those gaps and
 makes masking reversible, so your app keeps working after the LLM responds.
 
 ## Install
 
 ```bash
-pip install kavach-pii
+pip install indimasq
 ```
 
-The package is `kavach-pii`; the import is `kavach`. Requires Python 3.10+ and has no
-dependencies. For the [MCP server](#mcp-server), install `kavach-pii[mcp]`. (An unrelated PyPI package named `kavach` also uses the `kavach` import name; do
+The package is `indimasq`; the import is `indimasq`. Requires Python 3.10+ and has no
+dependencies. For the [MCP server](#mcp-server), install `indimasq[mcp]`. (An unrelated PyPI package named `indimasq` also uses the `indimasq` import name; do
 not install both in the same environment.)
 
 To try unreleased changes, install from source:
 
 ```bash
-pip install git+https://github.com/harshita1615/kavach-pii.git
+pip install git+https://github.com/harshita1615/indimasq.git
 ```
 
 ## What it detects
@@ -63,7 +63,7 @@ pip install git+https://github.com/harshita1615/kavach-pii.git
 | Email | `[EMAIL_1]` | Standard address format |
 
 Context words in English, Hinglish and Devanagari ("mera aadhaar", "khata number", "मोबाइल")
-raise confidence. When two matches overlap, Kavach keeps the higher-confidence, longer and more
+raise confidence. When two matches overlap, IndiMasq keeps the higher-confidence, longer and more
 specific one, so `9876543210@paytm` is one UPI ID, not a phone number.
 
 Planned next: ABHA health ID, PIN code, voter ID, passport and vehicle numbers (v1.1); names and
@@ -74,7 +74,7 @@ addresses (v2).
 ### Choose entities and mode
 
 ```python
-k = Kavach(entities=["AADHAAR", "PAN", "UPI"], mode="mask")
+k = IndiMasq(entities=["AADHAAR", "PAN", "UPI"], mode="mask")
 ```
 
 | Mode | `session.mask()` returns | `session.unmask()` |
@@ -104,7 +104,7 @@ session.clear()  # forget everything
 Tell the model to keep placeholders intact:
 
 ```python
-from kavach import SYSTEM_PROMPT  # "Keep every placeholder exactly as written ..."
+from indimasq import SYSTEM_PROMPT  # "Keep every placeholder exactly as written ..."
 ```
 
 `unmask()` tolerates small edits such as `[pan_1]` or `[ PAN_1 ]`, and leaves placeholders it
@@ -125,34 +125,34 @@ print(stream.flush())
 ### Scan only
 
 ```python
-for d in Kavach().scan(text):
+for d in IndiMasq().scan(text):
     print(d.entity_type, d.start, d.end, d.score)  # d.text_in(text) gives the value
 ```
 
 ### Command line
 
 ```bash
-kavach scan chat.txt                  # types, line/column and confidence; never the values
-kavach scan --json *.txt              # machine-readable
-kavach scan --entities PAN,UPI -      # read from stdin
-kavach redact chat.txt -o safe.txt    # replace PII with placeholders
+indimasq scan chat.txt                  # types, line/column and confidence; never the values
+indimasq scan --json *.txt              # machine-readable
+indimasq scan --entities PAN,UPI -      # read from stdin
+indimasq redact chat.txt -o safe.txt    # replace PII with placeholders
 ```
 
-`kavach scan` exits with 1 when it finds anything, so it works as a pre-commit or CI check.
+`indimasq scan` exits with 1 when it finds anything, so it works as a pre-commit or CI check.
 There is no `mask` command: restoring later would require saving the mapping to disk, which
-Kavach never does. Use the Python API for reversible masking.
+IndiMasq never does. Use the Python API for reversible masking.
 
 ### MCP server
 
-`kavach-mcp` lets an AI assistant (Claude Desktop, Claude Code, Cursor and other
+`indimasq-mcp` lets an AI assistant (Claude Desktop, Claude Code, Cursor and other
 [MCP](https://modelcontextprotocol.io/) clients) check and redact files without reading the
 personal data in them.
 
 ```bash
-pip install "kavach-pii[mcp]"
+pip install "indimasq[mcp]"
 ```
 
-The extra installs the official MCP Python SDK; plain `pip install kavach-pii` stays
+The extra installs the official MCP Python SDK; plain `pip install indimasq` stays
 dependency-free. The server runs locally over stdio and makes no network calls.
 
 | Tool | What the assistant gets back |
@@ -162,28 +162,28 @@ dependency-free. The server runs locally over stdio and makes no network calls.
 | `scan_text(text)` | Types, positions and counts |
 | `redact_text(text)` | The text with placeholders, for sending on to a message, email, ticket or log |
 
-Ask it to "summarise customers.csv using Kavach" and it scans the file, writes
+Ask it to "summarise customers.csv using IndiMasq" and it scans the file, writes
 `customers.redacted.csv` and reads only that copy, so the real values never enter the
 conversation. The server's instructions tell the assistant to work this way.
 
 **Connect it.** `--root` sets the folders the file tools may use (default: the current folder);
 repeat it for more than one.
 
-- Claude Code: `claude mcp add kavach -- kavach-mcp --root /path/to/data`, or a `.mcp.json` in the
+- Claude Code: `claude mcp add indimasq -- indimasq-mcp --root /path/to/data`, or a `.mcp.json` in the
   project:
 
   ```json
   {
     "mcpServers": {
-      "kavach": { "command": "kavach-mcp", "args": ["--root", "/path/to/data"] }
+      "indimasq": { "command": "indimasq-mcp", "args": ["--root", "/path/to/data"] }
     }
   }
   ```
 
-- Claude Desktop: add the same `"kavach"` entry under `mcpServers` in
-  `claude_desktop_config.json`. On Windows, give the full path to `kavach-mcp.exe` (or to
-  `python.exe` with `"args": ["-m", "kavach.mcp_server", "--root", ...]`).
-- Without installing: `uvx --from "kavach-pii[mcp]" kavach-mcp --root /path/to/data`.
+- Claude Desktop: add the same `"indimasq"` entry under `mcpServers` in
+  `claude_desktop_config.json`. On Windows, give the full path to `indimasq-mcp.exe` (or to
+  `python.exe` with `"args": ["-m", "indimasq.mcp_server", "--root", ...]`).
+- Without installing: `uvx --from "indimasq[mcp]" indimasq-mcp --root /path/to/data`.
 
 `--entities` and `--threshold` work as in the command-line tool.
 
@@ -193,7 +193,7 @@ They never overwrite the input file, and replace an existing redacted copy only 
 can be restored through the server.
 
 **Limits.** Any text the assistant passes to `scan_text` or `redact_text`, it has already read;
-those tools protect where the text goes next, not the conversation itself. Kavach also cannot
+those tools protect where the text goes next, not the conversation itself. IndiMasq also cannot
 stop an assistant from opening the original file with its own file tools. To rule that out in
 Claude Code, keep the originals in a folder it may not read and write the redacted copies
 elsewhere, for example in `.claude/settings.json`:
@@ -206,11 +206,11 @@ with `redact_file(path="data/customers.csv", output_path="safe/customers.csv")`.
 
 ## Accuracy
 
-Measured on the **holdout split** of Kavach's
-[public synthetic benchmark](https://github.com/harshita1615/kavach-pii/tree/main/benchmark): 600
+Measured on the **holdout split** of IndiMasq's
+[public synthetic benchmark](https://github.com/harshita1615/indimasq/tree/main/benchmark): 600
 sentences in English, Hinglish and Hindi, 581 labelled values, and 141 sentences with no PII but
 plenty of look-alikes (order IDs, UTRs, PNRs, timestamps). The holdout templates were written after
-Kavach was tuned and have never been used to tune it.
+IndiMasq was tuned and have never been used to tune it.
 
 | Entity | Precision | Recall | Masked¹ |
 | --- | ---: | ---: | ---: |
@@ -227,36 +227,36 @@ Kavach was tuned and have never been used to tune it.
 
 Compared with Microsoft Presidio 2.2.364 on the same data:
 
-| | Kavach | Presidio, default | Presidio + its Indian recognizers |
+| | IndiMasq | Presidio, default | Presidio + its Indian recognizers |
 | --- | ---: | ---: | ---: |
 | Values masked (all types) | **95.7%** | 55.9% | 79.3% |
 | Clean sentences wrongly flagged | **32 / 141** | 44 / 141 | 65 / 141 |
 | Latency, ms per 1,000 chars² | **0.8** | 93 | 92 |
 
 ² On one Windows laptop, Python 3.14. Presidio's time is mostly spaCy NER, which also finds names
-and places that Kavach does not.
+and places that IndiMasq does not.
 
-Where Kavach is weaker:
+Where IndiMasq is weaker:
 
 - **Phone false alarms.** A bare 10-digit number starting 6-9 (a coupon code or an order number
-  with no label) looks exactly like a mobile number. Kavach errs towards masking.
-- **Bank accounts without a keyword.** Kavach needs a context word nearby ("account", "a/c",
+  with no label) looks exactly like a mobile number. IndiMasq errs towards masking.
+- **Bank accounts without a keyword.** IndiMasq needs a context word nearby ("account", "a/c",
   "khata"), so a line like "Copying from my passbook: 50100…" is missed. Presidio masks more bank
   numbers here (91.5% vs 84.5%), mostly as other entity types.
-- **UPI IDs with handles Kavach does not know**, when no "UPI" keyword is nearby.
+- **UPI IDs with handles IndiMasq does not know**, when no "UPI" keyword is nearby.
 
 Brackets-intact round trips (mask, then echo, reorder, change case or spacing, or stream in
-chunks, then unmask) restored every value in all 467 holdout sentences Kavach masked. If the LLM
+chunks, then unmask) restored every value in all 467 holdout sentences IndiMasq masked. If the LLM
 drops the brackets (`PAN_1`), nothing is restored.
 
 Full tables, the tuning ("dev") split, and how to reproduce everything:
-[benchmark/README.md](https://github.com/harshita1615/kavach-pii/blob/main/benchmark/README.md).
+[benchmark/README.md](https://github.com/harshita1615/indimasq/blob/main/benchmark/README.md).
 Results are written by `python -m benchmark.run_eval`
 and never edited by hand.
 
 ## Privacy principles
 
-- Everything runs in-process. Kavach makes no network calls.
+- Everything runs in-process. IndiMasq makes no network calls.
 - Raw values are never logged, printed, stored or included in errors. A test fails the build if
   the package starts logging or printing.
 - Audit output is limited to entity types and counts.
@@ -265,7 +265,7 @@ and never edited by hand.
 
 ## Limitations
 
-Kavach reduces the chance of PII reaching an LLM; it cannot guarantee that none will. It is a
+IndiMasq reduces the chance of PII reaching an LLM; it cannot guarantee that none will. It is a
 risk-reduction tool, not legal advice, and using it does not by itself make an application
 compliant with the DPDP Act or any other law.
 
@@ -295,12 +295,13 @@ ruff check . && ruff format --check .
 ## Roadmap
 
 1. **Python package** (this repo): core detection and masking ✅, benchmark ✅, PyPI release ✅
-2. **Chrome extension** ([extension/](https://github.com/harshita1615/kavach-pii/tree/main/extension)):
-   warns before PII is pasted or sent into ChatGPT, Claude or Gemini, masks it, and shows the real
-   values again in the replies on your screen; runs fully on-device.
+2. **Chrome extension** ([extension/](https://github.com/harshita1615/indimasq/tree/main/extension)):
+   warns before PII is pasted, sent or attached (PDF, Word, text files) on ChatGPT, Claude or
+   Gemini, masks it or attaches a safe copy, and shows the real value when you point at a
+   placeholder; runs fully on-device.
    Built and tested; in Chrome Web Store review
-3. **Integrations**: [MCP server](#mcp-server) ✅, [website](https://kavach.bigforge.tech/) ✅,
-   [web demo](https://kavach.bigforge.tech/demo/) ✅; next: OpenAI-compatible proxy, Presidio
+3. **Integrations**: [MCP server](#mcp-server) ✅, [website](https://indimasq.bigforge.tech/) ✅,
+   [web demo](https://indimasq.bigforge.tech/demo/) ✅; next: OpenAI-compatible proxy, Presidio
    recognizer pack, n8n node
 
 ## Related work
@@ -308,8 +309,8 @@ ruff check . && ruff format --check .
 - [Microsoft Presidio](https://github.com/microsoft/presidio): general PII detection and
   anonymization. It ships recognizers for Aadhaar, PAN, GSTIN, Indian passport, voter ID and
   vehicle registration, though they are not enabled in its default English setup (as of
-  2.2.364). Kavach aims to complement it, and a Presidio recognizer pack is planned.
+  2.2.364). IndiMasq aims to complement it, and a Presidio recognizer pack is planned.
 
 ## License
 
-[MIT](https://github.com/harshita1615/kavach-pii/blob/main/LICENSE) © 2026 Harshita Chaudhary
+[MIT](https://github.com/harshita1615/indimasq/blob/main/LICENSE) © 2026 Harshita Chaudhary

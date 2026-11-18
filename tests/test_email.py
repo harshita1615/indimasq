@@ -1,7 +1,7 @@
 import pytest
 
-from kavach.detectors import EmailDetector
-from kavach.types import EntityType
+from indimasq.detectors import EmailDetector
+from indimasq.types import EntityType
 
 
 @pytest.fixture

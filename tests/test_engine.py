@@ -3,8 +3,8 @@ from itertools import pairwise
 import pytest
 from synthetic import AADHAAR, BANK, EMAIL, GSTIN, IFSC, KITCHEN_SINK, PAN, PHONE, UPI
 
-from kavach.engine import CONTEXT_BOOST, Engine, parse_entities, resolve_overlaps
-from kavach.types import Detection, EntityType
+from indimasq.engine import CONTEXT_BOOST, Engine, parse_entities, resolve_overlaps
+from indimasq.types import Detection, EntityType
 
 E = EntityType
 

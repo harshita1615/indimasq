@@ -8,7 +8,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any
 
-from kavach.types import Detection
+from indimasq.types import Detection
 
 
 def line_col(text: str, index: int) -> tuple[int, int]:

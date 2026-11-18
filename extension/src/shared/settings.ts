@@ -17,7 +17,7 @@ export interface Settings {
   caught: Partial<Record<EntityType, number>>;
 }
 
-const KEY = "kavach";
+const KEY = "indimasq";
 
 export function defaults(): Settings {
   return {

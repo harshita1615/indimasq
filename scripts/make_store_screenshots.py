@@ -1,6 +1,6 @@
 """Compose Chrome Web Store screenshots (1280x800) from raw captures.
 
-    pip install pillow   # dev only; not a Kavach dependency
+    pip install pillow   # dev only; not a IndiMasq dependency
     python scripts/make_store_screenshots.py <captures-dir>
 
 Each output places one capture, scaled to fit, under a short caption on a

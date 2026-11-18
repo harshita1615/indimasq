@@ -1,4 +1,4 @@
-/** Detection pipeline, mirroring kavach/engine.py:
+/** Detection pipeline, mirroring indimasq/engine.py:
  * detect -> validate -> context score -> resolve overlaps. */
 
 import { hasContext, hasNotPiiLabel } from "./context.ts";

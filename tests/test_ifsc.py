@@ -1,8 +1,8 @@
 import pytest
 
-from kavach.detectors import IfscDetector
-from kavach.detectors.ifsc import KNOWN_BANK_SCORE, UNKNOWN_BANK_SCORE
-from kavach.types import EntityType
+from indimasq.detectors import IfscDetector
+from indimasq.detectors.ifsc import KNOWN_BANK_SCORE, UNKNOWN_BANK_SCORE
+from indimasq.types import EntityType
 
 
 @pytest.fixture

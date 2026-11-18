@@ -3,7 +3,7 @@ requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
-name = "kavach-pii"
+name = "indimasq"
 dynamic = ["version"]
 description = "Detect, mask and restore Indian PII (Aadhaar, PAN, UPI, bank details) before it reaches an LLM."
 readme = "README.md"
@@ -42,28 +42,28 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://kavach.bigforge.tech/"
-Source = "https://github.com/harshita1615/kavach-pii"
-Issues = "https://github.com/harshita1615/kavach-pii/issues"
-Benchmark = "https://github.com/harshita1615/kavach-pii/tree/main/benchmark"
-Changelog = "https://github.com/harshita1615/kavach-pii/blob/main/CHANGELOG.md"
+Homepage = "https://indimasq.bigforge.tech/"
+Source = "https://github.com/harshita1615/indimasq"
+Issues = "https://github.com/harshita1615/indimasq/issues"
+Benchmark = "https://github.com/harshita1615/indimasq/tree/main/benchmark"
+Changelog = "https://github.com/harshita1615/indimasq/blob/main/CHANGELOG.md"
 
 [project.scripts]
-kavach = "kavach.cli:main"
-kavach-mcp = "kavach.mcp_server:main"
+indimasq = "indimasq.cli:main"
+indimasq-mcp = "indimasq.mcp_server:main"
 
 [project.optional-dependencies]
-# The MCP server (kavach-mcp). The core library never imports it.
+# The MCP server (indimasq-mcp). The core library never imports it.
 mcp = ["mcp>=2.3,<3"]
 dev = ["pytest>=8", "ruff>=0.6", "mcp>=2.3,<3"]
 # Only for regenerating the dataset and comparing with Presidio; never needed at runtime.
 benchmark = ["faker>=30", "presidio-analyzer>=2.2"]
 
 [tool.hatch.version]
-path = "src/kavach/__init__.py"
+path = "src/indimasq/__init__.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/kavach"]
+packages = ["src/indimasq"]
 
 [tool.hatch.build.targets.sdist]
 include = ["src/", "tests/", "benchmark/", "README.md", "CHANGELOG.md", "LICENSE"]

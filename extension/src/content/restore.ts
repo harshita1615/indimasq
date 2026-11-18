@@ -1,6 +1,6 @@
 /**
  * Placeholders in the chat, such as [PAN_1] in the AI's reply, are underlined;
- * pointing at one shows the original value in a small Kavach tooltip.
+ * pointing at one shows the original value in a small IndiMasq tooltip.
  *
  * The chat page itself is never changed: the text keeps its placeholders, so
  * the real values never enter the page, where the site's scripts could read
@@ -11,7 +11,7 @@
 
 import { findPlaceholders } from "../shared/restore.ts";
 
-const HIGHLIGHT = "kavach-placeholder";
+const HIGHLIGHT = "indimasq-placeholder";
 const SKIP =
   "textarea, input, [contenteditable=''], [contenteditable='true'], [contenteditable='plaintext-only'], script, style, noscript";
 
@@ -132,7 +132,7 @@ function tooltip(): { show(label: string, value: string, at: DOMRect): void; hid
   let text: HTMLElement;
 
   function build(): void {
-    host = document.createElement("kavach-tooltip");
+    host = document.createElement("indimasq-tooltip");
     const root = host.attachShadow({ mode: "closed" });
     const style = document.createElement("style");
     style.textContent = `

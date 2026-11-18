@@ -5,7 +5,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import ClassVar
 
-from kavach.types import Detection, EntityType
+from indimasq.types import Detection, EntityType
 
 
 class Detector(ABC):

@@ -1,8 +1,8 @@
 import pytest
 
-from kavach.detectors import AadhaarDetector
-from kavach.types import EntityType
-from kavach.validators import verhoeff
+from indimasq.detectors import AadhaarDetector
+from indimasq.types import EntityType
+from indimasq.validators import verhoeff
 
 # Synthetic numbers built with a correct check digit. Never use real Aadhaar numbers.
 VALID = "23456789012" + verhoeff.check_digit("23456789012")

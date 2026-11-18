@@ -1,7 +1,7 @@
 import pytest
 
-from kavach.context import has_context, keywords_for
-from kavach.types import EntityType
+from indimasq.context import has_context, keywords_for
+from indimasq.types import EntityType
 
 BANK = EntityType.BANK_ACCOUNT
 NUM = "123456789012"

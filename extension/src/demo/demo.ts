@@ -1,8 +1,8 @@
-/** Web demo for kavach.bigforge.tech/demo/: the extension's detection core,
+/** Web demo for indimasq.bigforge.tech/demo/: the extension's detection core,
  * run on whatever the visitor types. Everything stays in the page; the site's
  * Content-Security-Policy blocks network requests as well. */
 
-import { Kavach } from "../core/index.ts";
+import { IndiMasq } from "../core/index.ts";
 import type { MaskingSession } from "../core/session.ts";
 import { ENTITY_TYPES, type EntityType } from "../core/types.ts";
 
@@ -45,8 +45,8 @@ const reply = byId<HTMLTextAreaElement>("reply");
 const restored = byId<HTMLElement>("restored");
 const entityBoxes = byId<HTMLElement>("entities");
 
-let kavach = new Kavach();
-let session: MaskingSession = kavach.session();
+let indimasq = new IndiMasq();
+let session: MaskingSession = indimasq.session();
 let replyEdited = false;
 
 for (const type of ENTITY_TYPES) {
@@ -57,7 +57,7 @@ for (const type of ENTITY_TYPES) {
   box.checked = true;
   box.addEventListener("change", () => {
     const chosen = [...entityBoxes.querySelectorAll<HTMLInputElement>("input:checked")];
-    kavach = new Kavach({ entities: chosen.map((b) => b.value) });
+    indimasq = new IndiMasq({ entities: chosen.map((b) => b.value) });
     update();
   });
   const swatch = document.createElement("span");
@@ -70,7 +70,7 @@ for (const type of ENTITY_TYPES) {
 /** The input with each detection wrapped in a labelled <mark>. Built from DOM
  * nodes, never HTML strings, so typed text cannot inject markup. */
 function renderHighlights(text: string): number {
-  const detections = kavach.scan(text);
+  const detections = indimasq.scan(text);
   const nodes: Node[] = [];
   let last = 0;
   for (const d of detections) {
@@ -116,7 +116,7 @@ function sampleReply(maskedText: string): string {
 
 function update(): void {
   const text = input.value;
-  session = kavach.session();
+  session = indimasq.session();
   const maskedText = session.mask(text);
   const found = renderHighlights(text);
   renderCounts(found);

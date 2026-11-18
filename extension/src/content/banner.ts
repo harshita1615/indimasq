@@ -46,7 +46,7 @@ let current: { host: HTMLElement; previousFocus: Element | null } | null = null;
 
 function mount(build: (root: ShadowRoot) => HTMLElement): HTMLElement {
   close();
-  const host = document.createElement("kavach-banner");
+  const host = document.createElement("indimasq-banner");
   const root = host.attachShadow({ mode: "closed" });
   const style = document.createElement("style");
   style.textContent = STYLE;
@@ -68,8 +68,8 @@ export function showWarning(title: string, body: string, actions: Action[]): voi
     wrap.className = "wrap";
     wrap.setAttribute("role", "alertdialog");
     wrap.setAttribute("aria-modal", "false");
-    wrap.setAttribute("aria-labelledby", "kavach-title");
-    wrap.setAttribute("aria-describedby", "kavach-body");
+    wrap.setAttribute("aria-labelledby", "indimasq-title");
+    wrap.setAttribute("aria-describedby", "indimasq-body");
 
     const head = document.createElement("div");
     head.className = "head";
@@ -77,11 +77,11 @@ export function showWarning(title: string, body: string, actions: Action[]): voi
     const text = document.createElement("div");
     const h = document.createElement("p");
     h.className = "title";
-    h.id = "kavach-title";
+    h.id = "indimasq-title";
     h.textContent = title;
     const p = document.createElement("p");
     p.className = "body";
-    p.id = "kavach-body";
+    p.id = "indimasq-body";
     p.textContent = body;
     text.append(h, p);
     head.append(text);

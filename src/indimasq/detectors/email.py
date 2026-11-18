@@ -10,8 +10,8 @@ from __future__ import annotations
 
 import re
 
-from kavach.detectors.base import Detector
-from kavach.types import Detection, EntityType
+from indimasq.detectors.base import Detector
+from indimasq.types import Detection, EntityType
 
 _LABEL = r"[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?"
 

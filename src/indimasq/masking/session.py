@@ -10,10 +10,10 @@ from __future__ import annotations
 from collections import Counter
 from typing import Literal
 
-from kavach.engine import Engine
-from kavach.masking import placeholders
-from kavach.masking.stream_buffer import StreamUnmasker
-from kavach.types import Detection, EntityType
+from indimasq.engine import Engine
+from indimasq.masking import placeholders
+from indimasq.masking.stream_buffer import StreamUnmasker
+from indimasq.types import Detection, EntityType
 
 Mode = Literal["mask", "redact", "scan"]
 MODES: tuple[str, ...] = ("mask", "redact", "scan")

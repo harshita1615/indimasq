@@ -1,4 +1,4 @@
-/** Context words, mirroring kavach/context/scorer.py. */
+/** Context words, mirroring indimasq/context/scorer.py. */
 
 import { RULES } from "./rules.ts";
 import { escapeRegex, isAscii, WS } from "./regex.ts";

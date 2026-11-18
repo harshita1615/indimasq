@@ -2,9 +2,9 @@ import random
 
 import pytest
 
-from kavach.detectors import GstinDetector, PanDetector
-from kavach.types import EntityType
-from kavach.validators import gstin_checksum
+from indimasq.detectors import GstinDetector, PanDetector
+from indimasq.types import EntityType
+from indimasq.validators import gstin_checksum
 
 _CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 

@@ -2,7 +2,7 @@ import random
 
 import pytest
 
-from kavach.validators import verhoeff
+from indimasq.validators import verhoeff
 
 
 def test_known_vector_from_reference():

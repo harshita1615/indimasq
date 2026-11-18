@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-SRC = Path(__file__).parent.parent / "src" / "kavach"
+SRC = Path(__file__).parent.parent / "src" / "indimasq"
 # cli.py will print results to the user's terminal, but only placeholders/counts.
 EXEMPT = {"cli.py"}
 

@@ -31,8 +31,8 @@ DATASET_DIR = Path(__file__).resolve().parent.parent / "dataset"
 
 # split -> (positive templates, negative templates, default size, default seed, file)
 SPLITS = {
-    "dev": (POSITIVE, NEGATIVE, 1500, 2026, "kavach_bench_v1.jsonl"),
-    "holdout": (HOLDOUT_POSITIVE, HOLDOUT_NEGATIVE, 600, 7, "kavach_bench_v1_holdout.jsonl"),
+    "dev": (POSITIVE, NEGATIVE, 1500, 2026, "indimasq_bench_v1.jsonl"),
+    "holdout": (HOLDOUT_POSITIVE, HOLDOUT_NEGATIVE, 600, 7, "indimasq_bench_v1_holdout.jsonl"),
 }
 
 SLOT = re.compile(r"\{([A-Z0-9_]+)\}")

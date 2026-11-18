@@ -1,8 +1,8 @@
 import pytest
 
-from kavach.detectors import UpiDetector
-from kavach.detectors.upi import KNOWN_HANDLE_SCORE, UNKNOWN_HANDLE_SCORE
-from kavach.types import EntityType
+from indimasq.detectors import UpiDetector
+from indimasq.detectors.upi import KNOWN_HANDLE_SCORE, UNKNOWN_HANDLE_SCORE
+from indimasq.types import EntityType
 
 
 @pytest.fixture

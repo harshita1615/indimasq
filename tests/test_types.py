@@ -2,7 +2,7 @@ import dataclasses
 
 import pytest
 
-from kavach import Detection, EntityType
+from indimasq import Detection, EntityType
 
 
 def test_detection_holds_no_raw_text():

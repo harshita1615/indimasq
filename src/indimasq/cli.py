@@ -1,13 +1,13 @@
 """Command-line interface.
 
-    kavach scan [FILE ...]          report PII by type and position (never the values)
-    kavach redact [FILE] [-o OUT]   write the text with PII replaced by placeholders
+    indimasq scan [FILE ...]          report PII by type and position (never the values)
+    indimasq redact [FILE] [-o OUT]   write the text with PII replaced by placeholders
 
 FILE defaults to "-" (stdin). scan exits 1 when anything is found, so it can be
 used as a pre-commit or CI check.
 
 There is no "mask" command: restoring later would need the mapping saved to
-disk, which Kavach never does. Use the Python API for reversible masking.
+disk, which IndiMasq never does. Use the Python API for reversible masking.
 """
 
 from __future__ import annotations
@@ -17,11 +17,11 @@ import json
 import sys
 from pathlib import Path
 
-from kavach import __version__
-from kavach.engine import DEFAULT_THRESHOLD
-from kavach.kavach import Kavach
-from kavach.report import build as build_report
-from kavach.types import Detection, EntityType
+from indimasq import __version__
+from indimasq.engine import DEFAULT_THRESHOLD
+from indimasq.indimasq import IndiMasq
+from indimasq.report import build as build_report
+from indimasq.types import Detection, EntityType
 
 EXIT_CLEAN = 0
 EXIT_FOUND = 1
@@ -64,11 +64,11 @@ def _print_report(report: dict) -> None:
     print(f"  summary: {summary}")
 
 
-def _cmd_scan(kavach: Kavach, args: argparse.Namespace) -> int:
+def _cmd_scan(indimasq: IndiMasq, args: argparse.Namespace) -> int:
     reports = []
     for source in args.files:
         text = _read(source)
-        reports.append(_report(source, text, kavach.scan(text)))
+        reports.append(_report(source, text, indimasq.scan(text)))
     if args.json:
         print(json.dumps(reports if len(reports) > 1 else reports[0], indent=2))
     else:
@@ -77,8 +77,8 @@ def _cmd_scan(kavach: Kavach, args: argparse.Namespace) -> int:
     return EXIT_FOUND if any(r["count"] for r in reports) else EXIT_CLEAN
 
 
-def _cmd_redact(kavach: Kavach, args: argparse.Namespace) -> int:
-    redacted = kavach.redact(_read(args.file))
+def _cmd_redact(indimasq: IndiMasq, args: argparse.Namespace) -> int:
+    redacted = indimasq.redact(_read(args.file))
     if args.output:
         try:
             Path(args.output).write_text(redacted, encoding="utf-8")
@@ -94,7 +94,7 @@ def _entities(value: str) -> list[str]:
 
 
 def detection_options() -> argparse.ArgumentParser:
-    """--entities and --threshold, shared by kavach and kavach-mcp."""
+    """--entities and --threshold, shared by indimasq and indimasq-mcp."""
     entity_names = ", ".join(e.value for e in EntityType)
     common = argparse.ArgumentParser(add_help=False)
     common.add_argument(
@@ -115,9 +115,9 @@ def detection_options() -> argparse.ArgumentParser:
 def build_parser() -> argparse.ArgumentParser:
     common = detection_options()
     parser = argparse.ArgumentParser(
-        prog="kavach", description="Detect and redact Indian PII in text."
+        prog="indimasq", description="Detect and redact Indian PII in text."
     )
-    parser.add_argument("--version", action="version", version=f"kavach {__version__}")
+    parser.add_argument("--version", action="version", version=f"indimasq {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
 
     scan = sub.add_parser(
@@ -152,10 +152,10 @@ def main(argv: list[str] | None = None) -> int:
 
     args = build_parser().parse_args(argv)
     try:
-        kavach = Kavach(entities=args.entities, threshold=args.threshold)
-        return args.handler(kavach, args)
+        indimasq = IndiMasq(entities=args.entities, threshold=args.threshold)
+        return args.handler(indimasq, args)
     except (CliError, ValueError) as exc:
-        print(f"kavach: error: {exc}", file=sys.stderr)
+        print(f"indimasq: error: {exc}", file=sys.stderr)
         return EXIT_ERROR
 
 

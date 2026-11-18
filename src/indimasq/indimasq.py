@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from kavach.engine import DEFAULT_THRESHOLD, Engine
-from kavach.masking.session import MODES, MaskingSession, Mode
-from kavach.types import Detection, EntityType
+from indimasq.engine import DEFAULT_THRESHOLD, Engine
+from indimasq.masking.session import MODES, MaskingSession, Mode
+from indimasq.types import Detection, EntityType
 
 SYSTEM_PROMPT = (
     "Some values in the user's message have been replaced with placeholders such as "
@@ -15,10 +15,10 @@ SYSTEM_PROMPT = (
 )
 
 
-class Kavach:
+class IndiMasq:
     """Detect, mask and restore Indian PII.
 
-    >>> k = Kavach(entities=["PAN", "UPI"])
+    >>> k = IndiMasq(entities=["PAN", "UPI"])
     >>> session = k.session()
     >>> session.mask("PAN ABCPE1234F")
     'PAN [PAN_1]'
@@ -54,4 +54,4 @@ class Kavach:
 
     def __repr__(self) -> str:
         names = ",".join(sorted(e.value for e in self.entities))
-        return f"<Kavach mode={self.mode} entities={names}>"
+        return f"<IndiMasq mode={self.mode} entities={names}>"

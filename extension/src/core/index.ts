@@ -1,4 +1,4 @@
-/** Kavach detection core for the browser, ported from the Python package.
+/** IndiMasq detection core for the browser, ported from the Python package.
  *
  * Runs entirely in memory: no network, storage or logging. */
 
@@ -9,7 +9,7 @@ import type { Detection, EntityType } from "./types.ts";
 
 export const SYSTEM_PROMPT: string = RULES.systemPrompt;
 
-export class Kavach {
+export class IndiMasq {
   readonly mode: Mode;
   readonly #engine: Engine;
 

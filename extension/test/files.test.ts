@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
-import { Kavach } from "../src/core/index.ts";
+import { IndiMasq } from "../src/core/index.ts";
 import { docxText, redactDocx, redactXml } from "../src/files/docx.ts";
 import { readZip, writeZip } from "../src/files/zip.ts";
 import { coversFor, imagesToPdf, pageText, SIDE_MARGIN } from "../src/files/pdf.ts";
@@ -34,7 +34,7 @@ test("Word: reads the text of a real .docx, including tables and footers", async
 });
 
 test("Word: the safe copy has placeholders instead of every value, and reads back", async () => {
-  const session = new Kavach().session();
+  const session = new IndiMasq().session();
   const safe = await redactDocx(fixture("sample.docx"), session);
   const text = await docxText(safe);
   for (const value of VALUES) assert.ok(!text.includes(value), `${value} is still in the copy`);
@@ -52,7 +52,7 @@ test("Word: a value split over runs is replaced in the first run, the rest empti
   const xml =
     '<w:p><w:r><w:t xml:space="preserve">PAN: </w:t></w:r><w:r><w:rPr><w:b/></w:rPr><w:t>ABCPE</w:t></w:r>' +
     "<w:r><w:t>1234F now</w:t></w:r></w:p>";
-  const out = redactXml(xml, new Kavach().session());
+  const out = redactXml(xml, new IndiMasq().session());
   assert.equal(
     out,
     '<w:p><w:r><w:t xml:space="preserve">PAN: </w:t></w:r><w:r><w:rPr><w:b/></w:rPr><w:t>[PAN_1]</w:t></w:r>' +
@@ -62,12 +62,12 @@ test("Word: a value split over runs is replaced in the first run, the rest empti
 
 test("Word: special characters are kept escaped, other XML untouched", () => {
   const xml = "<w:p><w:r><w:t>R&amp;D: PAN ABCPE1234F &lt;ok&gt;</w:t></w:r></w:p><w:tbl/>";
-  assert.equal(redactXml(xml, new Kavach().session()), "<w:p><w:r><w:t>R&amp;D: PAN [PAN_1] &lt;ok&gt;</w:t></w:r></w:p><w:tbl/>");
+  assert.equal(redactXml(xml, new IndiMasq().session()), "<w:p><w:r><w:t>R&amp;D: PAN [PAN_1] &lt;ok&gt;</w:t></w:r></w:p><w:tbl/>");
 });
 
 test("Word: a document without personal data comes back unchanged in text", async () => {
   const xml = "<w:p><w:r><w:t>Order no. 4029381123 delivered</w:t></w:r></w:p>";
-  assert.equal(redactXml(xml, new Kavach().session()), xml);
+  assert.equal(redactXml(xml, new IndiMasq().session()), xml);
 });
 
 // --- PDF ------------------------------------------------------------------------------------
@@ -88,7 +88,7 @@ test("PDF: reads the text of a real PDF (Word export) with each piece's position
 test("PDF: every detected value gets a cover on its page, labelled with its placeholder", async () => {
   const read = await readPdf(pdfjs, fixture("sample.pdf"), NODE_OPTIONS);
   assert.ok(read.ok);
-  const session = new Kavach().session();
+  const session = new IndiMasq().session();
   const page = read.pages[0]!;
   const text = pageText(page.items);
   const spans = session.maskSpans(text.text).replacements;
@@ -126,7 +126,7 @@ test("PDF: pieces on one line are joined with spaces where there is a gap, lines
   assert.ok(Math.abs(covers[0]!.x - (55 - m)) < 1e-9 && Math.abs(covers[0]!.w - (100 + 2 * m)) < 1e-9);
 });
 
-test("PDF: the copy Kavach writes is a valid PDF of pictures, with no text at all", async () => {
+test("PDF: the copy IndiMasq writes is a valid PDF of pictures, with no text at all", async () => {
   const jpeg = Uint8Array.from(atob(TINY_JPEG), (c) => c.charCodeAt(0));
   const pdf = imagesToPdf([
     { jpeg, pixelWidth: 4, pixelHeight: 4, width: 595.28, height: 841.89 },
@@ -168,7 +168,7 @@ test("labelled fields: dummy values next to their label are found, with their ty
 });
 
 test("labelled fields: the safe copy masks them all, alongside the strict detections", () => {
-  const session = new Kavach().session();
+  const session = new IndiMasq().session();
   const { replacements } = session.maskSpans(FORM, labelledFields(FORM));
   let out = "";
   let last = 0;

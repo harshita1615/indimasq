@@ -4,7 +4,7 @@
  * Chatbot UIs change often. Everything site-specific lives here, so a layout
  * change means editing one list. Each site also falls back to generic rules
  * (any focused textarea or contenteditable; any button labelled "send"), so a
- * renamed selector degrades gracefully instead of silently disabling Kavach.
+ * renamed selector degrades gracefully instead of silently disabling IndiMasq.
  */
 
 export interface Site {

@@ -7,11 +7,11 @@ from pathlib import Path
 import pytest
 
 from benchmark.metrics import Counts, Span, false_alarms, masked_counts, strict_counts
-from kavach.detectors.pan import HOLDER_TYPES
-from kavach.validators import gstin_checksum, verhoeff
+from indimasq.detectors.pan import HOLDER_TYPES
+from indimasq.validators import gstin_checksum, verhoeff
 
 DATASET_DIR = Path(__file__).parent.parent / "benchmark" / "dataset"
-SPLITS = {"dev": "kavach_bench_v1.jsonl", "holdout": "kavach_bench_v1_holdout.jsonl"}
+SPLITS = {"dev": "indimasq_bench_v1.jsonl", "holdout": "indimasq_bench_v1_holdout.jsonl"}
 TYPES = {"AADHAAR", "PAN", "UPI", "IFSC", "BANK_ACCOUNT", "PHONE", "GSTIN", "EMAIL"}
 
 

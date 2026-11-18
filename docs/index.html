@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kavach: Indian PII Shield</title>
-    <meta name="description" content="Kavach warns before you send Aadhaar, PAN, UPI, bank or phone details to ChatGPT, Claude or Gemini, and masks them. Runs on your device. Open source." />
-    <meta property="og:title" content="Kavach: keep Indian personal data out of AI chats" />
+    <title>IndiMasq: Indian PII Shield</title>
+    <meta name="description" content="IndiMasq warns before you send or attach Aadhaar, PAN, UPI, bank or phone details on ChatGPT, Claude or Gemini, and masks them. Runs on your device. Open source." />
+    <meta property="og:title" content="IndiMasq: keep Indian personal data out of AI chats" />
     <meta property="og:description" content="Detects Aadhaar, PAN, UPI, IFSC, bank account, phone, GSTIN and email, and replaces them with placeholders before they reach an AI. Runs on your device." />
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icon32.png" />
     <style>
@@ -93,21 +93,21 @@
     <main>
       <header class="top">
         <img src="assets/icon128.png" alt="" />
-        <span>Kavach</span>
+        <span>IndiMasq</span>
         <nav>
           <a href="demo/">Demo</a>
           <a href="#developers">Developers</a>
           <a href="privacy/">Privacy</a>
-          <a href="https://github.com/harshita1615/kavach-pii">GitHub</a>
+          <a href="https://github.com/harshita1615/indimasq">GitHub</a>
         </nav>
       </header>
 
       <section class="hero">
         <h1>Keep your Aadhaar, PAN and UPI out of AI chats</h1>
         <p>
-          Kavach (कवच, "shield") warns you before you paste or send Indian personal details to
-          ChatGPT, Claude or Gemini, and swaps them for placeholders like <code>[PAN_1]</code>. It
-          runs entirely on your device.
+          IndiMasq warns you before you paste, send or attach Indian personal details
+          on ChatGPT, Claude or Gemini, and swaps them for placeholders like <code>[PAN_1]</code>,
+          in messages and in PDF, Word and text files. It runs entirely on your device.
         </p>
         <div class="actions">
           <!-- CHROME_WEB_STORE_URL: replace this span with
@@ -115,15 +115,15 @@
                once the listing is approved. -->
           <span class="btn primary" aria-disabled="true">Chrome Web Store: coming soon</span>
           <a class="btn" href="demo/">Try it in your browser</a>
-          <a class="btn" href="https://github.com/harshita1615/kavach-pii">View source on GitHub</a>
+          <a class="btn" href="https://github.com/harshita1615/indimasq">View source on GitHub</a>
         </div>
         <p class="note">Free and open source (MIT). Interface in English and Hindi.</p>
       </section>
 
       <section class="shots" aria-label="Screenshots">
         <figure>
-          <img src="assets/1-paste-warning.png" alt="Kavach banner on ChatGPT listing the personal details found in pasted text, with Mask, Send anyway and Cancel buttons" width="1280" height="800" />
-          <figcaption>1. Kavach pauses and tells you what it found.</figcaption>
+          <img src="assets/1-paste-warning.png" alt="IndiMasq banner on ChatGPT listing the personal details found in pasted text, with Mask, Send anyway and Cancel buttons" width="1280" height="800" />
+          <figcaption>1. IndiMasq pauses and tells you what it found.</figcaption>
         </figure>
         <figure>
           <img src="assets/2-masked.png" alt="The message box after masking, showing placeholders such as [PAN_1] and [UPI_1] instead of the real values" width="1280" height="800" loading="lazy" />
@@ -151,25 +151,26 @@
       <h2>Private by design</h2>
       <ul class="checks">
         <li>Runs entirely on your device. The extension makes no network requests at all.</li>
-        <li>Your messages are never stored, logged or sent anywhere.</li>
+        <li>Your messages and files are never stored, logged or sent anywhere.</li>
+        <li>Attached PDFs, Word and text files are checked first; the safe copy replaces each value with its placeholder.</li>
         <li>Works only on chatgpt.com, claude.ai and gemini.google.com.</li>
         <li>Stores only on/off switches and counts such as "PAN: 3", which you can reset.</li>
         <li>Open source, so anyone can check these claims.</li>
       </ul>
       <p class="note">
-        Read the full <a href="privacy/">privacy policy</a>. Kavach reduces risk but can miss
+        Read the full <a href="privacy/">privacy policy</a>. IndiMasq reduces risk but can miss
         things, so check before you send. It is not legal advice.
       </p>
 
       <h2>Accuracy</h2>
       <p>
         On a public synthetic benchmark of 600 held-out sentences in English, Hinglish and Hindi,
-        none of which were used to tune Kavach:
+        none of which were used to tune IndiMasq:
       </p>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th></th><th class="num">Kavach</th><th class="num">Presidio, default</th><th class="num">Presidio + Indian recognizers</th></tr>
+            <tr><th></th><th class="num">IndiMasq</th><th class="num">Presidio, default</th><th class="num">Presidio + Indian recognizers</th></tr>
           </thead>
           <tbody>
             <tr><td>Personal values masked</td><td class="num"><strong>95.7%</strong></td><td class="num">55.9%</td><td class="num">79.3%</td></tr>
@@ -179,35 +180,35 @@
       </div>
       <p class="note">
         Compared with Microsoft Presidio 2.2.364.
-        <a href="https://github.com/harshita1615/kavach-pii/blob/main/benchmark/README.md">Full results, weak spots and how to reproduce them</a>.
+        <a href="https://github.com/harshita1615/indimasq/blob/main/benchmark/README.md">Full results, weak spots and how to reproduce them</a>.
       </p>
 
       <h2 id="developers">For developers</h2>
       <p>The same detection engine is a Python package with no dependencies. Mask before the LLM call, restore after:</p>
-      <pre><code>pip install kavach-pii</code></pre>
-      <pre><code>from kavach import Kavach
+      <pre><code>pip install indimasq</code></pre>
+      <pre><code>from indimasq import IndiMasq
 
-session = Kavach().session()
+session = IndiMasq().session()
 safe = session.mask("My PAN is ABCPE1234F, refund to rahul@okaxis")
 # 'My PAN is [PAN_1], refund to [UPI_1]'
 reply = call_llm(safe)
 print(session.unmask(reply))</code></pre>
       <p>
-        Also a command-line scanner (<code>kavach scan</code>) for pre-commit and CI checks, and an
-        <a href="https://github.com/harshita1615/kavach-pii#mcp-server">MCP server</a>
-        (<code>pip install "kavach-pii[mcp]"</code>) that lets AI assistants such as Claude work
+        Also a command-line scanner (<code>indimasq scan</code>) for pre-commit and CI checks, and an
+        <a href="https://github.com/harshita1615/indimasq#mcp-server">MCP server</a>
+        (<code>pip install "indimasq[mcp]"</code>) that lets AI assistants such as Claude work
         from a redacted copy of a file without seeing the personal data in it.
-        <a href="https://github.com/harshita1615/kavach-pii#readme">Read the docs</a> ·
-        <a href="https://pypi.org/project/kavach-pii/">PyPI</a>
+        <a href="https://github.com/harshita1615/indimasq#readme">Read the docs</a> ·
+        <a href="https://pypi.org/project/indimasq/">PyPI</a>
       </p>
 
       <footer>
         <p>
           © 2026 Harshita Chaudhary · MIT licence ·
           <a href="privacy/">Privacy</a> ·
-          <a href="https://github.com/harshita1615/kavach-pii/issues">Report an issue</a>
+          <a href="https://github.com/harshita1615/indimasq/issues">Report an issue</a>
         </p>
-        <p>Kavach is not affiliated with OpenAI, Anthropic or Google. Screenshots use made-up data.</p>
+        <p>IndiMasq is not affiliated with OpenAI, Anthropic or Google. Screenshots use made-up data.</p>
       </footer>
     </main>
   </body>

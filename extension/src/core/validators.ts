@@ -1,4 +1,4 @@
-/** Checksums, mirroring kavach/validators/. Errors never echo the input. */
+/** Checksums, mirroring indimasq/validators/. Errors never echo the input. */
 
 // --- Verhoeff (Aadhaar check digit) ------------------------------------------
 // https://en.wikipedia.org/wiki/Verhoeff_algorithm

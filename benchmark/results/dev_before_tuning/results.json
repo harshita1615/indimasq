@@ -1,16 +1,16 @@
 {
   "meta": {
-    "dataset": "kavach_bench_v1.jsonl",
+    "dataset": "indimasq_bench_v1.jsonl",
     "sentences": 1500,
     "gold_entities": 1925,
     "clean_sentences": 374,
     "date": "2026-10-10",
     "python": "3.14.8",
-    "kavach": "0.1.0.dev0"
+    "indimasq": "0.1.0.dev0"
   },
   "results": [
     {
-      "name": "kavach",
+      "name": "indimasq",
       "per_entity": {
         "AADHAAR": {
           "precision": 0.9549180327868853,

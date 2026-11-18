@@ -1,9 +1,9 @@
 {
   "ext_name": {
-    "message": "Kavach: Indian PII shield for AI chats"
+    "message": "IndiMasq: Indian PII shield for AI chats"
   },
   "ext_description": {
-    "message": "Warns before you send Aadhaar, PAN, UPI, bank or phone details to ChatGPT, Claude or Gemini, and masks them. Runs on your device."
+    "message": "Warns before you send or attach Aadhaar, PAN, UPI, bank or phone details on ChatGPT, Claude or Gemini, and masks them. On-device."
   },
   "entity_AADHAAR_one": {
     "message": "Aadhaar number"
@@ -91,7 +91,7 @@
     "message": "Masked. Check the message, then send it."
   },
   "masked_note": {
-    "message": "(Kavach: values in [brackets] are hidden personal details. Keep them as they are.)"
+    "message": "(IndiMasq: values in [brackets] are hidden personal details. Keep them as they are.)"
   },
   "btn_upload_redacted": {
     "message": "Attach safe copy"
@@ -127,10 +127,10 @@
     "message": "Reset counts"
   },
   "popup_privacy": {
-    "message": "Runs entirely on your device. Kavach never sends your messages anywhere, and stores only these counts."
+    "message": "Runs entirely on your device. IndiMasq never sends your messages anywhere, and stores only these counts."
   },
   "popup_limits": {
-    "message": "Kavach reduces risk; it can miss things. Check before you send."
+    "message": "IndiMasq reduces risk; it can miss things. Check before you send."
   },
   "popup_chat": {
     "message": "This chat"
@@ -139,13 +139,13 @@
     "message": "Kept only in this tab's memory. Gone when you close or reload the tab."
   },
   "notice_checking_file": {
-    "message": "Kavach is checking the file on your device…"
+    "message": "IndiMasq is checking the file on your device…"
   },
   "notice_file_clean": {
-    "message": "Kavach checked the file: no personal details found."
+    "message": "IndiMasq checked the file: no personal details found."
   },
   "notice_file_failed": {
-    "message": "Kavach could not read this file, so it was not checked."
+    "message": "IndiMasq could not read this file, so it was not checked."
   },
   "banner_file_title": {
     "message": "The file contains $SUMMARY$.",
@@ -164,10 +164,10 @@
     }
   },
   "banner_file_body": {
-    "message": "Kavach can attach a copy with them replaced by placeholders like [PAN_1]. The AI never sees the real values. A PDF copy is made of page pictures, so its text cannot be selected."
+    "message": "IndiMasq can attach a copy with them replaced by placeholders like [PAN_1]. The AI never sees the real values. A PDF copy is made of page pictures, so its text cannot be selected."
   },
   "notice_redact_failed": {
-    "message": "Kavach could not make a safe copy, so nothing was attached."
+    "message": "IndiMasq could not make a safe copy, so nothing was attached."
   },
   "popup_files": {
     "message": "Files"
@@ -179,7 +179,7 @@
     "message": "Reads text, Word and PDF files on your device to find Aadhaar, PAN and other details."
   },
   "problem_locked": {
-    "message": "\"$NAME$\" is locked with a password, so Kavach could not check it.",
+    "message": "\"$NAME$\" is locked with a password, so IndiMasq could not check it.",
     "placeholders": {
       "name": {
         "content": "$1"
@@ -187,7 +187,7 @@
     }
   },
   "problem_too_long": {
-    "message": "\"$NAME$\" is too long for Kavach to check (more than 30 pages).",
+    "message": "\"$NAME$\" is too long for IndiMasq to check (more than 30 pages).",
     "placeholders": {
       "name": {
         "content": "$1"
@@ -195,7 +195,7 @@
     }
   },
   "problem_damaged": {
-    "message": "Kavach could not open \"$NAME$\" to check it.",
+    "message": "IndiMasq could not open \"$NAME$\" to check it.",
     "placeholders": {
       "name": {
         "content": "$1"
@@ -203,7 +203,7 @@
     }
   },
   "problem_no_text": {
-    "message": "\"$NAME$\" has no readable text (it may be scanned), so Kavach could not check it.",
+    "message": "\"$NAME$\" has no readable text (it may be scanned), so IndiMasq could not check it.",
     "placeholders": {
       "name": {
         "content": "$1"

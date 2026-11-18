@@ -1,4 +1,4 @@
-"""Draw the Kavach icon (a shield with a check mark) as PNGs, with no image library.
+"""Draw the IndiMasq icon (a shield with a check mark) as PNGs, with no image library.
 
     python scripts/make_icons.py
 

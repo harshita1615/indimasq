@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 
-from kavach.types import EntityType
+from indimasq.types import EntityType
 
 _TYPES = "|".join(sorted((e.value for e in EntityType), key=len, reverse=True))
 

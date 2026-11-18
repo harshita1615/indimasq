@@ -9,7 +9,7 @@
  * on this screen only. The popup can list this tab's placeholders too.
  */
 
-import { type EntityType, Kavach } from "../core/index.ts";
+import { type EntityType, IndiMasq } from "../core/index.ts";
 import { t } from "../shared/i18n.ts";
 import { hasNote, withNote } from "../shared/note.ts";
 import { addCaught, defaults, load, onChange } from "../shared/settings.ts";
@@ -33,8 +33,8 @@ const site = siteForHost(location.hostname);
 if (site) start(site);
 
 function start(site: Site): void {
-  const kavach = new Kavach();
-  const session = kavach.session();
+  const indimasq = new IndiMasq();
+  const session = indimasq.session();
   let settings = defaults();
   let bypassUntil = 0; // after "Send anyway", let the re-sent message through
   let lastComposer: HTMLElement | null = null;
@@ -59,7 +59,7 @@ function start(site: Site): void {
     _capture: true,
   ): void {
     // On the window, in the capture phase, registered before the page's own
-    // scripts run (document_start): Kavach sees paste, drop and file events first.
+    // scripts run (document_start): IndiMasq sees paste, drop and file events first.
     window.addEventListener(
       type,
       (event: Event) => {
@@ -111,7 +111,7 @@ function start(site: Site): void {
 
   // The popup asks this tab what it has hidden, to list it for the user.
   chrome.runtime.onMessage.addListener((message: { type?: string }, sender, sendResponse) => {
-    if (message?.type !== "kavach-list" || sender.id !== chrome.runtime.id || sender.tab) return;
+    if (message?.type !== "indimasq-list" || sender.id !== chrome.runtime.id || sender.tab) return;
     const reply: TabFinds = {
       text: session.entries().map(([placeholder, value]) => ({ placeholder, label: entityLabel(placeholder), value })),
     };
@@ -154,7 +154,7 @@ function start(site: Site): void {
     record,
     // Files also count labelled fields ("Aadhaar number: ...") that fail the
     // strict checks; see files/labelled.ts. Chat messages keep the strict rules.
-    count: (text) => countByType(withLabelled(kavach.scan(text), labelledFields(text))),
+    count: (text) => countByType(withLabelled(indimasq.scan(text), labelledFields(text))),
     masker: {
       mask: (text) => {
         let out = "";
@@ -185,7 +185,7 @@ function start(site: Site): void {
       const composer = composerFrom(event.target);
       const text = event.clipboardData?.getData("text/plain") ?? "";
       if (!composer || !text) return;
-      const detections = kavach.scan(text);
+      const detections = indimasq.scan(text);
       if (detections.length === 0) return;
 
       event.preventDefault();
@@ -224,7 +224,7 @@ function start(site: Site): void {
   function checkSend(event: Event, composer: HTMLElement | null, resend: () => void): void {
     if (!enabled() || !composer || Date.now() < bypassUntil) return;
     const text = getText(composer);
-    const detections = kavach.scan(text);
+    const detections = indimasq.scan(text);
     if (detections.length === 0) return;
 
     event.preventDefault();

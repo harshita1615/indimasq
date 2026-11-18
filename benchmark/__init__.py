@@ -1,1 +1,1 @@
-"""Synthetic Indian PII benchmark for Kavach."""
+"""Synthetic Indian PII benchmark for IndiMasq."""

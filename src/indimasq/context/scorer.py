@@ -9,8 +9,8 @@ from __future__ import annotations
 import re
 from functools import cache
 
-from kavach.context import keywords_en, keywords_hi
-from kavach.types import EntityType
+from indimasq.context import keywords_en, keywords_hi
+from indimasq.types import EntityType
 
 WINDOW_BEFORE = 50
 WINDOW_AFTER = 30

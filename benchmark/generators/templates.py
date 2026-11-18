@@ -166,7 +166,7 @@ NEGATIVE = [
 ]
 
 # --- Held-out split -------------------------------------------------------------
-# Written after Kavach was tuned on the templates above, and never used for
+# Written after IndiMasq was tuned on the templates above, and never used for
 # tuning. Different phrasing: chat abbreviations, numbers with no label directly
 # before them, values at sentence starts, multi-sentence messages.
 

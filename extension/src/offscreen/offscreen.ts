@@ -123,10 +123,10 @@ function paint(ctx: CanvasRenderingContext2D, cover: Cover, scale: number): void
 }
 
 chrome.runtime.onMessage.addListener((message: OffscreenRequest, sender, sendResponse) => {
-  if (message?.target !== "kavach-offscreen" || sender.id !== chrome.runtime.id) return;
+  if (message?.target !== "indimasq-offscreen" || sender.id !== chrome.runtime.id) return;
   window.clearTimeout(idle);
   const work =
-    message.type === "kavach-pdf-read"
+    message.type === "indimasq-pdf-read"
       ? read(message.pdf)
       : render(message.pdf, message.spans).catch((): PdfRenderResponse => ({ ok: false }));
   work.then(sendResponse).finally(() => {

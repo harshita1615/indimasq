@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kavach Privacy Policy</title>
-    <meta name="description" content="Privacy policy for the Kavach browser extension. Kavach processes text only on your device and collects no personal data." />
+    <title>IndiMasq Privacy Policy</title>
+    <meta name="description" content="Privacy policy for the IndiMasq browser extension. IndiMasq processes text only on your device and collects no personal data." />
     <style>
       :root {
         --bg: #ffffff;
@@ -55,32 +55,32 @@
   </head>
   <body>
     <main>
-      <h1>Kavach Privacy Policy</h1>
-      <p class="muted">Kavach browser extension · Effective 18 November 2026</p>
+      <h1>IndiMasq Privacy Policy</h1>
+      <p class="muted">IndiMasq browser extension · Effective 18 November 2026</p>
 
       <div class="summary">
-        <strong>In short:</strong> Kavach checks the text you paste or send, and the files you
+        <strong>In short:</strong> IndiMasq checks the text you paste or send, and the files you
         attach, on ChatGPT, Claude and Gemini <strong>on your own device</strong>. It does not collect, store, sell or transmit your
         messages or any personal data. It makes no network requests at all.
       </div>
 
-      <h2>What Kavach does</h2>
+      <h2>What IndiMasq does</h2>
       <p>
-        Kavach is a browser extension that warns you before you send Indian personal details, such as
+        IndiMasq is a browser extension that warns you before you send Indian personal details, such as
         Aadhaar, PAN, UPI ID, IFSC, bank account, mobile number, GSTIN or email address, to an AI
-        chatbot, and can replace them with placeholders like <code>[PAN_1]</code> before the message
-        leaves your browser.
+        chatbot, in a message or in an attached file, and can replace them with placeholders like
+        <code>[PAN_1]</code> before anything leaves your browser.
       </p>
 
       <h2>How your text is handled</h2>
       <ul>
         <li>
           When you paste into or send from the message box on <code>chatgpt.com</code>,
-          <code>claude.ai</code> or <code>gemini.google.com</code>, Kavach reads that text and checks
+          <code>claude.ai</code> or <code>gemini.google.com</code>, IndiMasq reads that text and checks
           it for personal details using rules that run inside your browser.
         </li>
         <li>
-          The text is processed in memory only. It is never saved, logged, or sent to Kavach, the
+          The text is processed in memory only. It is never saved, logged, or sent to IndiMasq, the
           developer, or anyone else.
         </li>
         <li>
@@ -89,8 +89,8 @@
           tab's memory only and disappears when you close or reload the tab.
         </li>
         <li>
-          After you mask something, Kavach underlines its placeholders in the chat, such as
-          <code>[PAN_1]</code> in a reply. When you point at one, Kavach shows the original value in
+          After you mask something, IndiMasq underlines its placeholders in the chat, such as
+          <code>[PAN_1]</code> in a reply. When you point at one, IndiMasq shows the original value in
           its own small tooltip. The chat page keeps the placeholder: the value is not put into the
           page, and nothing is sent to the chatbot or anyone else. You can turn this off with
           <strong>Show real values on hover</strong> in the popup.
@@ -101,7 +101,7 @@
           saved.
         </li>
         <li>
-          Kavach does not run on any other website and does not read your browsing history. It does
+          IndiMasq does not run on any other website and does not read your browsing history. It does
           not store or send the chat's contents.
         </li>
       </ul>
@@ -110,13 +110,13 @@
       <ul>
         <li>
           When you attach a text, Word (.docx) or PDF file (with the file picker, by dragging it in,
-          or by pasting it), Kavach reads its text on your device. PDFs are opened with PDF.js,
+          or by pasting it), IndiMasq reads its text on your device. PDFs are opened with PDF.js,
           which is bundled inside the extension. Nothing is downloaded and nothing is uploaded by
-          Kavach.
+          IndiMasq.
         </li>
         <li>
           The file is held back from the chat page until the check finishes (usually a second or
-          two). If Kavach finds personal details, you choose: attach a safe copy, attach the
+          two). If IndiMasq finds personal details, you choose: attach a safe copy, attach the
           original, or cancel.
         </li>
         <li>
@@ -126,8 +126,18 @@
           or attachments is carried over.
         </li>
         <li>
-          Locked (password-protected), scanned or very long PDFs cannot be checked: Kavach says so,
+          In files, a value written next to its label (for example "Aadhaar number: …" or
+          "Account number: …") is treated as personal data even if it is not a valid ID number.
+        </li>
+        <li>
+          Locked (password-protected), scanned or very long PDFs cannot be checked: IndiMasq says so,
           and you decide.
+        </li>
+        <li>
+          Some sites open the file picker through a hidden file input. So that IndiMasq can check
+          files chosen that way, a few lines of IndiMasq's code run in the chat page itself and add
+          that hidden input to the page while it is in use. This code does not read, keep or send
+          anything.
         </li>
         <li>
           Files and their text are processed in memory only, inside the extension, and never stored.
@@ -136,7 +146,7 @@
       </ul>
 
       <h2>What is stored on your device</h2>
-      <p>Kavach stores only the following, in your browser's local extension storage:</p>
+      <p>IndiMasq stores only the following, in your browser's local extension storage:</p>
       <table>
         <tr><th>Item</th><th>Example</th><th>Purpose</th></tr>
         <tr>
@@ -161,11 +171,15 @@
         <strong>Reset counts</strong> in the popup, and removing the extension deletes everything.
       </p>
 
-      <h2>What Kavach does not do</h2>
+      <h2>What IndiMasq does not do</h2>
       <ul>
         <li>No network requests, analytics, tracking, cookies or advertising.</li>
         <li>No collection, sale or sharing of personal data with anyone.</li>
-        <li>No remote code: all of Kavach's code is included in the extension package.</li>
+        <li>No uploading of your files: only the chat site receives what you choose to attach.</li>
+        <li>
+          No remote code: all of IndiMasq's code, including the PDF reader (PDF.js, by Mozilla,
+          Apache 2.0 licence), is included in the extension package.
+        </li>
         <li>No account or sign-in.</li>
       </ul>
 
@@ -173,26 +187,34 @@
       <ul>
         <li>
           <strong>Access to chatgpt.com, claude.ai and gemini.google.com:</strong> needed to check
-          the text in those sites' message boxes before it is sent. Kavach has no access to other
-          sites.
+          the text in those sites' message boxes and the files you attach there before they are
+          sent, and to show placeholders' values when you point at them. IndiMasq has no access to
+          other sites.
         </li>
         <li>
           <strong>Storage:</strong> to save the on/off settings and counts described above, on your
           device.
         </li>
+        <li>
+          <strong>Offscreen document:</strong> a hidden extension page where PDF.js opens attached
+          PDFs and draws safe copies. It runs on your device, keeps nothing between files, and
+          closes itself when idle.
+        </li>
       </ul>
 
       <h2>Limitations</h2>
       <p>
-        Kavach reduces the risk of sharing personal details, but it cannot guarantee that every
-        detail is caught. Please check your messages before sending. Kavach is not legal advice and
+        IndiMasq reduces the risk of sharing personal details, but it cannot guarantee that every
+        detail is caught. It does not yet detect names, addresses, card numbers or text inside
+        pictures (such as scanned pages or photos). Please check your messages and files before
+        sending. IndiMasq is not legal advice and
         does not by itself make you or your organisation compliant with any law.
       </p>
 
       <h2>Open source</h2>
       <p>
-        Kavach's source code is public, so anyone can verify these statements:
-        <a href="https://github.com/harshita1615/kavach-pii">github.com/harshita1615/kavach-pii</a>
+        IndiMasq's source code is public, so anyone can verify these statements:
+        <a href="https://github.com/harshita1615/indimasq">github.com/harshita1615/indimasq</a>
         (MIT licence).
       </p>
 
@@ -205,7 +227,7 @@
       <h2>Contact</h2>
       <p>
         Questions: open an issue at
-        <a href="https://github.com/harshita1615/kavach-pii/issues">github.com/harshita1615/kavach-pii/issues</a>
+        <a href="https://github.com/harshita1615/indimasq/issues">github.com/harshita1615/indimasq/issues</a>
         or email <a href="mailto:work.harshitachaudhary@gmail.com">work.harshitachaudhary@gmail.com</a>.
         Please never include real personal data in an issue.
       </p>

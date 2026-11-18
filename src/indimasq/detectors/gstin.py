@@ -14,10 +14,10 @@ from __future__ import annotations
 
 import re
 
-from kavach.detectors.base import Detector
-from kavach.detectors.pan import HOLDER_TYPES
-from kavach.types import Detection, EntityType
-from kavach.validators import gstin_checksum
+from indimasq.detectors.base import Detector
+from indimasq.detectors.pan import HOLDER_TYPES
+from indimasq.types import Detection, EntityType
+from indimasq.validators import gstin_checksum
 
 _PATTERN = re.compile(
     r"(?<![A-Za-z0-9])"

@@ -4,7 +4,7 @@ Romanised words are matched on word boundaries; Devanagari words are matched as
 substrings, because vowel signs break Python's \\b inside Devanagari words.
 """
 
-from kavach.types import EntityType
+from indimasq.types import EntityType
 
 KEYWORDS: dict[EntityType, tuple[str, ...]] = {
     EntityType.AADHAAR: ("aadhaar card", "aadhar card", "आधार", "आधार कार्ड"),

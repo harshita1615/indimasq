@@ -745,21 +745,35 @@
       return Object.fromEntries(this.#counts);
     }
     mask(text) {
-      const detections = this.#engine.analyze(text);
+      const { replacements } = this.maskSpans(text);
+      let out = "";
+      let last = 0;
+      for (const r of replacements) {
+        out += text.slice(last, r.start) + r.placeholder;
+        last = r.end;
+      }
+      return out + text.slice(last);
+    }
+    /** Like mask(), but returns where each placeholder goes ([start, end) in
+     * `text`, UTF-16 offsets) instead of the masked text. For documents whose
+     * text is spread over several pieces, such as the runs of a Word paragraph.
+     *
+     * `extra` adds detections found by other means (labelled fields in attached
+     * files); any that overlap the engine's own detections are dropped. */
+    maskSpans(text, extra = []) {
+      const found = this.#engine.analyze(text);
+      const added = extra.filter(
+        (x) => this.#engine.entities.has(x.entityType) && !found.some((d) => x.start < d.end && d.start < x.end)
+      );
+      const detections = [...found, ...added].sort((a, b) => a.start - b.start);
       for (const d of detections) {
         this.#counts.set(d.entityType, (this.#counts.get(d.entityType) ?? 0) + 1);
       }
-      if (this.mode === "scan" || detections.length === 0) return text;
+      if (this.mode === "scan" || detections.length === 0) return { replacements: [] };
       const taken = new Set([...text.matchAll(PLACEHOLDER)].map((m) => placeholderKey(m[1], m[2])));
-      let out = "";
-      let last = 0;
-      for (const d of detections) {
-        out += text.slice(last, d.start) + this.#placeholderFor(d, text, taken);
-        last = d.end;
-      }
-      out += text.slice(last);
+      const replacements = detections.map((d) => ({ start: d.start, end: d.end, placeholder: this.#placeholderFor(d, text, taken) }));
       if (this.mode === "redact") this.#forgetMapping();
-      return out;
+      return { replacements };
     }
     /** Replace known placeholders with their original values. Unknown
      * placeholders are left unchanged. */
@@ -768,6 +782,11 @@
       return text.replace(PLACEHOLDER, (whole, type, number) => {
         return this.#placeholderToValue.get(placeholderKey(type, number)) ?? whole;
       });
+    }
+    /** Placeholders created so far with their original values, oldest first.
+     * For showing the user their own data (the extension popup); never log it. */
+    entries() {
+      return [...this.#placeholderToValue];
     }
     /** Forget all mappings and counts. */
     clear() {
@@ -800,7 +819,7 @@
 
   // src/core/index.ts
   var SYSTEM_PROMPT = RULES.systemPrompt;
-  var Kavach = class {
+  var IndiMasq = class {
     mode;
     #engine;
     constructor(options = {}) {
@@ -855,8 +874,8 @@
   var reply = byId("reply");
   var restored = byId("restored");
   var entityBoxes = byId("entities");
-  var kavach = new Kavach();
-  var session = kavach.session();
+  var indimasq = new IndiMasq();
+  var session = indimasq.session();
   var replyEdited = false;
   for (const type of ENTITY_TYPES) {
     const label = document.createElement("label");
@@ -866,7 +885,7 @@
     box.checked = true;
     box.addEventListener("change", () => {
       const chosen = [...entityBoxes.querySelectorAll("input:checked")];
-      kavach = new Kavach({ entities: chosen.map((b) => b.value) });
+      indimasq = new IndiMasq({ entities: chosen.map((b) => b.value) });
       update();
     });
     const swatch = document.createElement("span");
@@ -876,7 +895,7 @@
     entityBoxes.append(label);
   }
   function renderHighlights(text) {
-    const detections = kavach.scan(text);
+    const detections = indimasq.scan(text);
     const nodes = [];
     let last = 0;
     for (const d of detections) {
@@ -917,7 +936,7 @@
   }
   function update() {
     const text = input.value;
-    session = kavach.session();
+    session = indimasq.session();
     const maskedText = session.mask(text);
     const found = renderHighlights(text);
     renderCounts(found);

@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 from collections.abc import Callable
 
-from kavach.masking import placeholders
+from indimasq.masking import placeholders
 
 # Characters that can appear inside a (possibly LLM-mangled) placeholder.
 _FRAGMENT = re.compile(r"\[[A-Za-z0-9_ \t]*")

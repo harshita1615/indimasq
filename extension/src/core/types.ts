@@ -1,5 +1,5 @@
 /**
- * Core data structures, mirroring kavach/types.py.
+ * Core data structures, mirroring indimasq/types.py.
  *
  * Privacy rule: a Detection never holds the matched text, only its position.
  */

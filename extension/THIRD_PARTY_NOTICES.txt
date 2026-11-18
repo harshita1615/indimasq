@@ -1,4 +1,4 @@
-Kavach bundles the following third-party component to read PDF files. It runs
+IndiMasq bundles the following third-party component to read PDF files. It runs
 entirely on the user's device; nothing is downloaded.
 
 - PDF.js 5.7.284 (offscreen.js, pdf/): Apache License 2.0. Copyright Mozilla

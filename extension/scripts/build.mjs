@@ -72,4 +72,4 @@ for (const [from, to] of [
   cpSync(new URL(from, root), new URL(to, dist), { recursive: true });
 }
 
-console.log(`built kavach extension ${manifest.version} into dist/`);
+console.log(`built indimasq extension ${manifest.version} into dist/`);

@@ -1,12 +1,12 @@
 import pytest
 from synthetic import KITCHEN_SINK, PAN, UPI
 
-from kavach import Kavach
+from indimasq import IndiMasq
 
 
 @pytest.fixture
 def session():
-    s = Kavach().session()
+    s = IndiMasq().session()
     s.mask(f"PAN {PAN}, UPI {UPI}")
     return s
 
@@ -83,7 +83,7 @@ def test_empty_stream(session):
 
 
 def test_full_round_trip_through_stream():
-    s = Kavach().session()
+    s = IndiMasq().session()
     masked = s.mask(KITCHEN_SINK)
     chunks = [masked[i : i + 7] for i in range(0, len(masked), 7)]
     assert run(s.stream(), chunks) == KITCHEN_SINK

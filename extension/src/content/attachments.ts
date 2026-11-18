@@ -43,7 +43,7 @@ export interface AttachmentDeps {
   masker: SpanMasker & { mask(text: string): string };
 }
 
-/** A kind of file Kavach can read. */
+/** A kind of file IndiMasq can read. */
 interface Reader {
   accepts(file: File): boolean;
   /** The file's text. Throws FileProblem when it cannot be checked. */
@@ -75,7 +75,7 @@ async function ask<T>(request: PdfReadRequest | PdfRenderRequest): Promise<T | u
 const pdfReader: Reader = {
   accepts: (f) => f.type === "application/pdf" || /\.pdf$/i.test(f.name),
   async text(file) {
-    const request: PdfReadRequest = { type: "kavach-pdf-read", pdf: toBase64(new Uint8Array(await file.arrayBuffer())) };
+    const request: PdfReadRequest = { type: "indimasq-pdf-read", pdf: toBase64(new Uint8Array(await file.arrayBuffer())) };
     const response = await ask<PdfReadResponse>(request);
     if (!response) throw new FileProblem("damaged");
     if (!response.ok) throw new FileProblem(response.reason);
@@ -87,7 +87,7 @@ const pdfReader: Reader = {
     const pages = pdfPages.get(file);
     if (!pages) throw new FileProblem("damaged");
     const spans = pages.map((p) => masker.maskSpans(pageText(p.items).text).replacements);
-    const request: PdfRenderRequest = { type: "kavach-pdf-render", pdf: toBase64(new Uint8Array(await file.arrayBuffer())), spans };
+    const request: PdfRenderRequest = { type: "indimasq-pdf-render", pdf: toBase64(new Uint8Array(await file.arrayBuffer())), spans };
     const response = await ask<PdfRenderResponse>(request);
     if (!response?.ok) throw new FileProblem("damaged");
     return new File([fromBase64(response.pdf)], file.name, { type: "application/pdf", lastModified: Date.now() });
@@ -220,7 +220,7 @@ export function installAttachmentChecks(deps: AttachmentDeps): void {
       }
     }
 
-    // A file Kavach could not open or read (a locked or scanned PDF): say why, let the user decide.
+    // A file IndiMasq could not open or read (a locked or scanned PDF): say why, let the user decide.
     if (found.length === 0 && problems.length > 0) {
       const { file, kind } = problems[0]!;
       showWarning(t(`problem_${kind.replace("-", "_")}`, [file.name]), t("problem_body"), [

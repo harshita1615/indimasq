@@ -3,12 +3,12 @@
  *
  * Many sites open the file picker with a file input they create in code and
  * never add to the page. Events on such an input never reach the page, so
- * Kavach's content script cannot see the chosen image. When a detached file
+ * IndiMasq's content script cannot see the chosen image. When a detached file
  * input opens its picker, this adds it to the page, hidden, so its events can
  * be checked like any other. Nothing else is touched, read or sent.
  */
 
-const HOLDER = "kavach-file-holder";
+const HOLDER = "indimasq-file-holder";
 
 function adopt(input: HTMLInputElement): void {
   if (input.isConnected || input.type !== "file") return;

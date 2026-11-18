@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kavach Live Demo</title>
-    <meta name="description" content="Paste text and see Kavach find and mask Aadhaar, PAN, UPI, bank, phone, GSTIN and email details. Runs entirely in your browser; nothing is sent anywhere." />
+    <title>IndiMasq Live Demo</title>
+    <meta name="description" content="Paste text and see IndiMasq find and mask Aadhaar, PAN, UPI, bank, phone, GSTIN and email details. Runs entirely in your browser; nothing is sent anywhere." />
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/icon32.png" />
     <style>
       :root {
@@ -113,17 +113,17 @@
   <body>
     <main>
       <header class="top">
-        <a class="home" href="../"><img src="../assets/icon128.png" alt="" /><span>Kavach</span></a>
+        <a class="home" href="../"><img src="../assets/icon128.png" alt="" /><span>IndiMasq</span></a>
         <nav>
           <a href="../">Home</a>
           <a href="../privacy/">Privacy</a>
-          <a href="https://github.com/harshita1615/kavach-pii">GitHub</a>
+          <a href="https://github.com/harshita1615/indimasq">GitHub</a>
         </nav>
       </header>
 
-      <h1>Try Kavach</h1>
+      <h1>Try IndiMasq</h1>
       <p class="lede">
-        Type or paste a message. Kavach finds Indian personal details, replaces them with
+        Type or paste a message. IndiMasq finds Indian personal details, replaces them with
         placeholders, and puts them back in the reply.
       </p>
       <p class="private">
@@ -146,7 +146,7 @@
 
       <div class="grid">
         <section>
-          <h2>2. What Kavach found</h2>
+          <h2>2. What IndiMasq found</h2>
           <p id="counts" class="muted" aria-live="polite"></p>
           <div id="highlighted" class="box"></div>
         </section>
@@ -165,17 +165,17 @@
         </section>
         <section>
           <h2>5. What you see</h2>
-          <p class="muted">Kavach puts the original values back, only on your side.</p>
+          <p class="muted">IndiMasq puts the original values back, only on your side.</p>
           <pre id="restored" class="box" aria-live="polite"></pre>
         </section>
       </div>
 
       <p class="muted">
-        Kavach can miss things and sometimes masks numbers that are not personal data; see the
-        <a href="https://github.com/harshita1615/kavach-pii#accuracy">measured accuracy</a>.
+        IndiMasq can miss things and sometimes masks numbers that are not personal data; see the
+        <a href="https://github.com/harshita1615/indimasq#accuracy">measured accuracy</a>.
       </p>
 
-      <h2>Use Kavach for real</h2>
+      <h2>Use IndiMasq for real</h2>
       <p class="muted">The same detection rules, in three forms:</p>
       <div class="uses">
         <div class="use">
@@ -186,14 +186,14 @@
         <div class="use">
           <h3>Python package</h3>
           <p>Mask prompts before your app calls an LLM and restore the reply.</p>
-          <pre class="box mono">pip install kavach-pii</pre>
-          <p><a href="https://github.com/harshita1615/kavach-pii#usage">Docs</a> · <a href="https://pypi.org/project/kavach-pii/">PyPI</a></p>
+          <pre class="box mono">pip install indimasq</pre>
+          <p><a href="https://github.com/harshita1615/indimasq#usage">Docs</a> · <a href="https://pypi.org/project/indimasq/">PyPI</a></p>
         </div>
         <div class="use">
           <h3>MCP server</h3>
           <p>Lets AI assistants such as Claude Desktop, Claude Code or Cursor work from a redacted copy of a file without seeing the personal data in it.</p>
-          <pre class="box mono">pip install "kavach-pii[mcp]"</pre>
-          <p><a href="https://github.com/harshita1615/kavach-pii#mcp-server">Setup guide</a></p>
+          <pre class="box mono">pip install "indimasq[mcp]"</pre>
+          <p><a href="https://github.com/harshita1615/indimasq#mcp-server">Setup guide</a></p>
         </div>
       </div>
 
@@ -201,7 +201,7 @@
         <p>
           © 2026 Harshita Chaudhary · MIT licence ·
           <a href="../privacy/">Privacy</a> ·
-          <a href="https://github.com/harshita1615/kavach-pii/issues">Report an issue</a>
+          <a href="https://github.com/harshita1615/indimasq/issues">Report an issue</a>
         </p>
       </footer>
     </main>

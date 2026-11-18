@@ -15,14 +15,14 @@ from synthetic import (
     UPI,
 )
 
-from kavach import SYSTEM_PROMPT, Kavach
+from indimasq import SYSTEM_PROMPT, IndiMasq
 
 ALL_VALUES = (AADHAAR_SPACED, PAN, UPI, BANK, IFSC, PHONE, EMAIL, GSTIN)
 
 
 @pytest.fixture
 def session():
-    return Kavach().session()
+    return IndiMasq().session()
 
 
 # --- mask --------------------------------------------------------------------
@@ -61,7 +61,7 @@ def test_mapping_persists_across_messages(session):
 
 
 def test_sessions_are_independent():
-    k = Kavach()
+    k = IndiMasq()
     s1, s2 = k.session(), k.session()
     s1.mask(f"{PAN} {PAN_2}")
     assert s2.mask(PAN_2) == "[PAN_1]"
@@ -128,19 +128,19 @@ def test_clear_forgets_everything(session):
 
 
 def test_redact_mode_cannot_be_reversed():
-    session = Kavach(mode="redact").session()
+    session = IndiMasq(mode="redact").session()
     masked = session.mask(f"PAN {PAN} and {PAN_2}")
     assert masked == "PAN [PAN_1] and [PAN_2]"
     assert session.unmask(masked) == masked
 
 
-def test_kavach_redact_shortcut():
-    k = Kavach()
+def test_indimasq_redact_shortcut():
+    k = IndiMasq()
     assert k.redact(f"PAN {PAN}") == "PAN [PAN_1]"
 
 
 def test_scan_mode_leaves_text_and_counts():
-    session = Kavach(mode="scan").session()
+    session = IndiMasq(mode="scan").session()
     assert session.mask(KITCHEN_SINK) == KITCHEN_SINK
     assert session.counts["PAN"] == 1
     assert sum(session.counts.values()) == 8
@@ -148,7 +148,7 @@ def test_scan_mode_leaves_text_and_counts():
 
 def test_invalid_mode():
     with pytest.raises(ValueError):
-        Kavach(mode="encrypt")
+        IndiMasq(mode="encrypt")
 
 
 # --- audit and privacy -------------------------------------------------------
@@ -161,14 +161,14 @@ def test_counts_are_types_and_numbers_only(session):
 
 def test_repr_and_str_hold_no_values(session):
     session.mask(KITCHEN_SINK)
-    for text in (repr(session), str(session), repr(Kavach())):
+    for text in (repr(session), str(session), repr(IndiMasq())):
         for value in ALL_VALUES:
             assert value not in text
 
 
 def test_scan_returns_positions_types_and_scores():
     text = f"PAN {PAN}"
-    [d] = Kavach().scan(text)
+    [d] = IndiMasq().scan(text)
     assert (d.entity_type.value, d.start, d.end) == ("PAN", 4, 14)
     assert 0 < d.score <= 1
     assert d.text_in(text) == PAN

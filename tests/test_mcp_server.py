@@ -9,8 +9,8 @@ pytest.importorskip("mcp")
 
 from mcp import Client, StdioServerParameters
 
-from kavach import Kavach, mcp_server
-from kavach.mcp_server import Workspace, build_server, main
+from indimasq import IndiMasq, mcp_server
+from indimasq.mcp_server import Workspace, build_server, main
 
 VALUES = [AADHAAR_SPACED, PAN, UPI, IFSC, BANK, PHONE, EMAIL, GSTIN]
 NOT_UTF8 = b"PAN ABCPE1234F \xff\xfe"
@@ -63,7 +63,7 @@ def test_scan_text_reports_types_not_values(root):
     assert not result.is_error
     report = result.structured_content
     assert report["count"] == 8
-    assert set(report["counts"]) == {e.value for e in Kavach().entities}
+    assert set(report["counts"]) == {e.value for e in IndiMasq().entities}
     assert report["items"][0]["line"] == 1
     assert_no_values(received)
 
@@ -71,7 +71,7 @@ def test_scan_text_reports_types_not_values(root):
 def test_redact_text(root):
     result, received = call(root, "redact_text", {"text": KITCHEN_SINK})
     out = result.structured_content
-    assert out["text"] == Kavach().redact(KITCHEN_SINK)
+    assert out["text"] == IndiMasq().redact(KITCHEN_SINK)
     assert "[PAN_1]" in out["text"]
     assert out["count"] == 8
     assert_no_values(received)
@@ -107,7 +107,7 @@ def test_redact_file_default_output(root):
     written = root / "sink.redacted.txt"
     assert out["output"] == str(written)
     assert out["counts"]["PAN"] == 1
-    assert written.read_text(encoding="utf-8") == Kavach().redact(KITCHEN_SINK)
+    assert written.read_text(encoding="utf-8") == IndiMasq().redact(KITCHEN_SINK)
     assert (root / "sink.txt").read_text(encoding="utf-8") == KITCHEN_SINK
     assert_no_values(received)
 
@@ -252,14 +252,14 @@ def test_main_missing_root(tmp_path):
 
 
 def test_main_bad_entity(tmp_path):
-    with pytest.raises(SystemExit, match="kavach-mcp: error"):
+    with pytest.raises(SystemExit, match="indimasq-mcp: error"):
         main(["--root", str(tmp_path), "--entities", "NOPE"])
 
 
 def test_stdio_end_to_end(root):
     """The real command over stdio: nothing but protocol messages on stdout."""
     params = StdioServerParameters(
-        command=sys.executable, args=["-m", "kavach.mcp_server", "--root", str(root)]
+        command=sys.executable, args=["-m", "indimasq.mcp_server", "--root", str(root)]
     )
 
     async def run():

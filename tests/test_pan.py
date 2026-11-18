@@ -1,8 +1,8 @@
 import pytest
 
-from kavach.detectors import PanDetector
-from kavach.detectors.pan import HOLDER_TYPES
-from kavach.types import EntityType
+from indimasq.detectors import PanDetector
+from indimasq.detectors.pan import HOLDER_TYPES
+from indimasq.types import EntityType
 
 # Synthetic PAN. Note the plan's example ABCDE1234F is NOT a valid PAN:
 # its 4th letter, D, is not a holder type.

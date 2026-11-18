@@ -10,16 +10,16 @@ import random
 import re
 import string
 
-from kavach.detectors.gstin import VALID_STATE_CODES
-from kavach.detectors.ifsc import KNOWN_BANK_CODES
-from kavach.detectors.upi import KNOWN_HANDLES
-from kavach.validators import gstin_checksum, verhoeff
+from indimasq.detectors.gstin import VALID_STATE_CODES
+from indimasq.detectors.ifsc import KNOWN_BANK_CODES
+from indimasq.detectors.upi import KNOWN_HANDLES
+from indimasq.validators import gstin_checksum, verhoeff
 
 UPPER = string.ascii_uppercase
 DIGITS = string.digits
 
-# Plausible handles that are deliberately NOT in Kavach's known list, so the
-# benchmark measures how Kavach handles UPI IDs it has not been told about.
+# Plausible handles that are deliberately NOT in IndiMasq's known list, so the
+# benchmark measures how IndiMasq handles UPI IDs it has not been told about.
 UNLISTED_HANDLES = ("okbizicici", "timecosmos", "ezeepay", "pockets", "yesfam", "hdfcjd")
 UNLISTED_BANK_CODES = ("ABCX", "QRTB", "MZNB", "PLKB")
 

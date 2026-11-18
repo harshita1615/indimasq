@@ -1,4 +1,4 @@
-# Kavach Indian PII benchmark
+# IndiMasq Indian PII benchmark
 
 A fully synthetic benchmark for detecting Indian personal data in short, chat-like text.
 No real person's data is used anywhere.
@@ -7,16 +7,16 @@ No real person's data is used anywhere.
 
 | Split | File | Sentences | Labelled entities | Sentences with no PII | Seed |
 | --- | --- | ---: | ---: | ---: | ---: |
-| dev | `dataset/kavach_bench_v1.jsonl` | 1,500 | 1,925 | 374 | 2026 |
-| holdout | `dataset/kavach_bench_v1_holdout.jsonl` | 600 | 581 | 141 | 7 |
+| dev | `dataset/indimasq_bench_v1.jsonl` | 1,500 | 1,925 | 374 | 2026 |
+| holdout | `dataset/indimasq_bench_v1_holdout.jsonl` | 600 | 581 | 141 | 7 |
 
-**Quote the holdout numbers.** Kavach's rules were tuned while looking at the dev split. In
+**Quote the holdout numbers.** IndiMasq's rules were tuned while looking at the dev split. In
 particular, the rule that lowers confidence for a number labelled directly before as "Order no.",
 "UTR" and so on was added after studying dev false alarms. The holdout templates were written after
 that tuning, with different phrasing (chat abbreviations, numbers with no label in front, values at
-the start of a sentence), and Kavach has not been changed in response to them.
+the start of a sentence), and IndiMasq has not been changed in response to them.
 
-Both splits were written by Kavach's author, so even the holdout split shares the author's idea of
+Both splits were written by IndiMasq's author, so even the holdout split shares the author's idea of
 what Indian PII looks like in text. An independent dataset would be a stronger test; contributions
 are welcome.
 
@@ -46,7 +46,7 @@ Names, cities and dates appear in the text but are not labelled. They are out of
 - **Valid fake identifiers.** Aadhaar numbers carry a correct Verhoeff check digit, GSTINs a
   correct check character, and PANs a valid holder-type letter. IDs come in several formats
   (spaced, dashed, `+91`, lowercase PAN and so on).
-- **IDs Kavach was not told about.** About 10% of UPI IDs use handles that are not in Kavach's
+- **IDs IndiMasq was not told about.** About 10% of UPI IDs use handles that are not in IndiMasq's
   known-handle list, and about 10% of IFSCs use unlisted bank codes.
 - **Hard negatives.** These are unlabelled values that look like PII: 12-digit order IDs and UTR
   numbers, timestamps, 10-digit order numbers and PNRs shaped like phone numbers, PANs with an
@@ -91,7 +91,7 @@ python -m benchmark.generators.build    # regenerates both splits (deterministic
   `InVehicleRegistrationRecognizer`.
 
 Presidio is run with its default score threshold. Presidio is a general-purpose framework, and this
-benchmark is built around the identifiers Kavach targets, so the comparison shows where Kavach adds
+benchmark is built around the identifiers IndiMasq targets, so the comparison shows where IndiMasq adds
 coverage for Indian data. It is not a ranking of the two tools overall.
 
 ```bash

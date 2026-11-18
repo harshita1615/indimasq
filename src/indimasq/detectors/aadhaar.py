@@ -14,9 +14,9 @@ from __future__ import annotations
 
 import re
 
-from kavach.detectors.base import Detector
-from kavach.types import Detection, EntityType
-from kavach.validators import verhoeff
+from indimasq.detectors.base import Detector
+from indimasq.types import Detection, EntityType
+from indimasq.validators import verhoeff
 
 # Between groups: a dash with optional spaces, runs of spaces/tabs, or one line break.
 _SEP = r"(?:[ \t]*-[ \t]*|[ \t]+|\r?\n)?"

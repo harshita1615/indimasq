@@ -8,7 +8,7 @@ never crash.
 
 import pytest
 
-from kavach import Kavach
+from indimasq import IndiMasq
 
 
 @pytest.mark.parametrize(
@@ -24,20 +24,20 @@ from kavach import Kavach
     ],
 )
 def test_devanagari_digits_ignored_without_crashing(text):
-    k = Kavach()
+    k = IndiMasq()
     assert k.scan(text) == []
     assert k.session().mask(text) == text
 
 
 def test_placeholder_with_devanagari_digit_not_restored():
-    s = Kavach().session()
+    s = IndiMasq().session()
     s.mask("PAN ABCPE1234F")
     assert s.unmask("[PAN_१]") == "[PAN_१]"
 
 
 def test_ascii_ids_next_to_devanagari_text_still_found():
     text = "मेरा आधार 2345 6789 0124 है"
-    k = Kavach()
+    k = IndiMasq()
     found = [d.text_in(text) for d in k.scan(text)]
     # Whether this particular number passes the checksum does not matter here;
     # what matters is that surrounding Devanagari does not block detection.

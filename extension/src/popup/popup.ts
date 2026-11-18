@@ -90,9 +90,9 @@ async function showChat(): Promise<void> {
   let finds: TabFinds | undefined;
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (tab?.id !== undefined) finds = await chrome.tabs.sendMessage(tab.id, { type: "kavach-list" });
+    if (tab?.id !== undefined) finds = await chrome.tabs.sendMessage(tab.id, { type: "indimasq-list" });
   } catch {
-    return; // not a chatbot tab, or Kavach has not loaded there
+    return; // not a chatbot tab, or IndiMasq has not loaded there
   }
   if (!finds || finds.text.length === 0) return;
   const rows = finds.text.map((f) => row(f.label, f.value, f.placeholder));

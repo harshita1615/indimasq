@@ -1,6 +1,6 @@
 """Make the PDF test files for the extension's file checks.
 
-    pip install pillow pypdf   # dev only; not Kavach dependencies
+    pip install pillow pypdf   # dev only; not IndiMasq dependencies
     python scripts/make_pdf_fixtures.py
 
 extension/test/fixtures/sample.pdf is the Word fixture (sample.docx) exported
@@ -22,7 +22,7 @@ FIXTURES = Path(__file__).resolve().parent.parent / "extension" / "test" / "fixt
 
 def locked() -> None:
     writer = PdfWriter(clone_from=PdfReader(FIXTURES / "sample.pdf"))
-    writer.encrypt(user_password="kavach-test", algorithm="AES-128")
+    writer.encrypt(user_password="indimasq-test", algorithm="AES-128")
     with open(FIXTURES / "locked.pdf", "wb") as f:
         writer.write(f)
 

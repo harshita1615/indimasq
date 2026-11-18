@@ -1,6 +1,6 @@
 """Synthetic, format-valid test values. Never replace these with real data."""
 
-from kavach.validators import gstin_checksum, verhoeff
+from indimasq.validators import gstin_checksum, verhoeff
 
 AADHAAR = "23456789012" + verhoeff.check_digit("23456789012")
 AADHAAR_SPACED = f"{AADHAAR[:4]} {AADHAAR[4:8]} {AADHAAR[8:]}"

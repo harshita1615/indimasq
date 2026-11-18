@@ -29,11 +29,11 @@ async function ensureOffscreen(): Promise<void> {
 
 chrome.runtime.onMessage.addListener((message: OffscreenRequest, sender, sendResponse) => {
   if (sender.id !== chrome.runtime.id || !sender.tab || message?.target) return;
-  if (message?.type !== "kavach-pdf-read" && message?.type !== "kavach-pdf-render") return;
+  if (message?.type !== "indimasq-pdf-read" && message?.type !== "indimasq-pdf-render") return;
   (async () => {
     try {
       await ensureOffscreen();
-      const request: OffscreenRequest = { ...message, target: "kavach-offscreen" };
+      const request: OffscreenRequest = { ...message, target: "indimasq-offscreen" };
       return (await chrome.runtime.sendMessage(request)) ?? { ok: false, reason: "damaged" };
     } catch {
       return { ok: false, reason: "damaged" };

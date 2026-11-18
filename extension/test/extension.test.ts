@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 
-import { Kavach } from "../src/core/index.ts";
+import { IndiMasq } from "../src/core/index.ts";
 import { looksLikeSendButton, SITES, siteForHost } from "../src/shared/sites.ts";
 import { hasNote, withNote } from "../src/shared/note.ts";
 import { findPlaceholders } from "../src/shared/restore.ts";
@@ -97,7 +97,7 @@ const hi = (key: string) => messages.hi![key]!.message;
 
 test("summary lists types in a fixed order with plurals, never values", () => {
   const text = "UPI rahul@okaxis, PAN ABCPE1234F, PAN AAAPZ9876K, mobile 9876543210";
-  const counts = countByType(new Kavach().scan(text));
+  const counts = countByType(new IndiMasq().scan(text));
   const summary = summarize(counts, en);
   assert.equal(summary, "2 PANs, 1 UPI ID and 1 phone number");
   assert.equal(summarize(counts, hi), "2 पैन, 1 यूपीआई आईडी और 1 फ़ोन नंबर");
@@ -107,7 +107,7 @@ test("summary lists types in a fixed order with plurals, never values", () => {
 });
 
 test("summary of one type", () => {
-  const counts = countByType(new Kavach().scan("PAN ABCPE1234F"));
+  const counts = countByType(new IndiMasq().scan("PAN ABCPE1234F"));
   assert.equal(summarize(counts, en), "1 PAN");
 });
 
@@ -117,13 +117,13 @@ for (const locale of ["en", "hi"]) {
   const note = (locale === "en" ? en : hi)("masked_note");
 
   test(`${locale} note: no detectable PII and no real-looking placeholder`, () => {
-    assert.deepEqual(new Kavach().scan(note), []);
+    assert.deepEqual(new IndiMasq().scan(note), []);
     assert.doesNotMatch(note, /\[[A-Za-z_]+_[0-9]+\]/);
     assert.ok([...note].length <= 90, `${locale} note is ${[...note].length} chars; keep it one line`);
   });
 
   test(`${locale} note: added once, and does not shift placeholder numbering`, () => {
-    const session = new Kavach().session();
+    const session = new IndiMasq().session();
     const once = withNote(session.mask("PAN ABCPE1234F"), note);
     assert.equal(once, `PAN [PAN_1]\n${note}`);
     assert.equal(withNote(once, note), once);
@@ -152,7 +152,7 @@ test("settings: showing real values in replies is on by default and can be turne
 // --- revealing placeholders ---------------------------------------------------------
 
 function sessionLookup() {
-  const session = new Kavach().session();
+  const session = new IndiMasq().session();
   const masked = session.mask("My PAN is ABCPE1234F, refund to rahul@okaxis");
   const lookup = (p: string) => {
     const v = session.unmask(p);
@@ -179,7 +179,7 @@ test("tolerates small edits by the AI and ignores unknown placeholders", () => {
 });
 
 test("a fresh session marks nothing", () => {
-  const session = new Kavach().session();
+  const session = new IndiMasq().session();
   const lookup = (p: string) => (session.unmask(p) === p ? undefined : session.unmask(p));
   assert.deepEqual(findPlaceholders("[PAN_1] and plain [brackets]", lookup), []);
 });
@@ -187,7 +187,7 @@ test("a fresh session marks nothing", () => {
 test("the session lists its placeholders for the popup, oldest first", () => {
   const { session } = sessionLookup();
   assert.deepEqual(session.entries(), [["[PAN_1]", "ABCPE1234F"], ["[UPI_1]", "rahul@okaxis"]]);
-  assert.deepEqual(new Kavach({ mode: "redact" }).session().entries(), []);
+  assert.deepEqual(new IndiMasq({ mode: "redact" }).session().entries(), []);
 });
 
 test("entity labels for placeholders", () => {

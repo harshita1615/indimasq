@@ -1,8 +1,8 @@
 import pytest
 
-from kavach.detectors import PhoneDetector
-from kavach.detectors.phone import BASE_SCORE, INTERNATIONAL_PREFIX_SCORE
-from kavach.types import EntityType
+from indimasq.detectors import PhoneDetector
+from indimasq.detectors.phone import BASE_SCORE, INTERNATIONAL_PREFIX_SCORE
+from indimasq.types import EntityType
 
 
 @pytest.fixture

@@ -3,12 +3,12 @@
 import pytest
 from synthetic import AADHAAR, KITCHEN_SINK, PAN, PHONE, UPI
 
-from kavach import Kavach
+from indimasq import IndiMasq
 
 
 @pytest.fixture
 def session():
-    return Kavach().session()
+    return IndiMasq().session()
 
 
 def test_windows_line_endings(session):

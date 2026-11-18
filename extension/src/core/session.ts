@@ -1,4 +1,4 @@
-/** Reversible masking, mirroring kavach/masking/.
+/** Reversible masking, mirroring indimasq/masking/.
  *
  * The placeholder <-> value mapping lives only in this object's memory. It is
  * never logged, stored or sent anywhere. */

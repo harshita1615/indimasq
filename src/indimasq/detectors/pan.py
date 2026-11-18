@@ -17,8 +17,8 @@ from __future__ import annotations
 
 import re
 
-from kavach.detectors.base import Detector
-from kavach.types import Detection, EntityType
+from indimasq.detectors.base import Detector
+from indimasq.types import Detection, EntityType
 
 HOLDER_TYPES = "ABCFGHJLPT"
 

@@ -3,7 +3,7 @@
 Matched case-insensitively on word boundaries.
 """
 
-from kavach.types import EntityType
+from indimasq.types import EntityType
 
 KEYWORDS: dict[EntityType, tuple[str, ...]] = {
     EntityType.AADHAAR: ("aadhaar", "aadhar", "adhaar", "adhar", "uid", "uidai", "uid number"),

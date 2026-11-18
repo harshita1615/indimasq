@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { Kavach, SYSTEM_PROMPT } from "../src/core/index.ts";
+import { IndiMasq, SYSTEM_PROMPT } from "../src/core/index.ts";
 import {
   gstinCheckChar,
   gstinIsValid,
@@ -35,7 +35,7 @@ test("gstin: published example", () => {
 });
 
 test("mask and unmask round trip", () => {
-  const s = new Kavach().session();
+  const s = new IndiMasq().session();
   const masked = s.mask(`My PAN is ${PAN}, refund to ${UPI}. Verify ${PAN}.`);
   assert.equal(masked, "My PAN is [PAN_1], refund to [UPI_1]. Verify [PAN_1].");
   assert.equal(
@@ -45,7 +45,7 @@ test("mask and unmask round trip", () => {
 });
 
 test("mapping persists across messages; sessions are independent", () => {
-  const k = new Kavach();
+  const k = new IndiMasq();
   const s1 = k.session();
   s1.mask(`PAN ${PAN}`);
   assert.equal(s1.mask(`new ${PAN_2}, old ${PAN}`), "new [PAN_2], old [PAN_1]");
@@ -54,7 +54,7 @@ test("mapping persists across messages; sessions are independent", () => {
 });
 
 test("unmask tolerates small edits and ignores unknown placeholders", () => {
-  const s = new Kavach().session();
+  const s = new IndiMasq().session();
   s.mask(PAN);
   for (const variant of ["[pan_1]", "[ PAN_1 ]", "[PAN _ 1]", "[Pan_01]"]) {
     assert.equal(s.unmask(`ok ${variant}`), `ok ${PAN}`);
@@ -65,26 +65,26 @@ test("unmask tolerates small edits and ignores unknown placeholders", () => {
 });
 
 test("existing placeholder text in the input is not reused", () => {
-  const s = new Kavach().session();
+  const s = new IndiMasq().session();
   assert.equal(s.mask(`Earlier [pan_1]; PAN ${PAN}`), "Earlier [pan_1]; PAN [PAN_2]");
 });
 
 test("redact mode keeps no mapping", () => {
-  const s = new Kavach({ mode: "redact" }).session();
+  const s = new IndiMasq({ mode: "redact" }).session();
   const masked = s.mask(`PAN ${PAN} and ${PAN_2}`);
   assert.equal(masked, "PAN [PAN_1] and [PAN_2]");
   assert.equal(s.unmask(masked), masked);
-  assert.equal(new Kavach().redact(`PAN ${PAN}`), "PAN [PAN_1]");
+  assert.equal(new IndiMasq().redact(`PAN ${PAN}`), "PAN [PAN_1]");
 });
 
 test("scan mode leaves text unchanged and counts", () => {
-  const s = new Kavach({ mode: "scan" }).session();
+  const s = new IndiMasq({ mode: "scan" }).session();
   assert.equal(s.mask(`${PAN} ${PAN} ${UPI}`), `${PAN} ${PAN} ${UPI}`);
   assert.deepEqual(s.counts, { PAN: 2, UPI: 1 });
 });
 
 test("toString and counts hold no values", () => {
-  const s = new Kavach().session();
+  const s = new IndiMasq().session();
   s.mask(`PAN ${PAN} UPI ${UPI}`);
   for (const text of [String(s), JSON.stringify(s.counts)]) {
     assert.ok(!text.includes(PAN) && !text.includes(UPI));
@@ -93,12 +93,12 @@ test("toString and counts hold no values", () => {
 
 test("entity filter and validation", () => {
   assert.deepEqual(
-    new Kavach({ entities: ["pan"] }).scan(`${PAN} ${UPI}`).map((d) => d.entityType),
+    new IndiMasq({ entities: ["pan"] }).scan(`${PAN} ${UPI}`).map((d) => d.entityType),
     ["PAN"],
   );
-  assert.throws(() => new Kavach({ entities: ["PASSPORT"] }), /unknown entity/);
-  assert.throws(() => new Kavach({ threshold: 2 }), /threshold/);
-  assert.throws(() => new Kavach({ mode: "encrypt" as never }), /mode/);
+  assert.throws(() => new IndiMasq({ entities: ["PASSPORT"] }), /unknown entity/);
+  assert.throws(() => new IndiMasq({ threshold: 2 }), /threshold/);
+  assert.throws(() => new IndiMasq({ mode: "encrypt" as never }), /mode/);
 });
 
 test("system prompt matches the Python package", () => {
@@ -108,6 +108,6 @@ test("system prompt matches the Python package", () => {
 test("long input is fast", () => {
   const text = "lorem ipsum 12345 ".repeat(5000) + `PAN ${PAN}`;
   const t0 = performance.now();
-  assert.equal(new Kavach().scan(text).length, 1);
+  assert.equal(new IndiMasq().scan(text).length, 1);
   assert.ok(performance.now() - t0 < 2000);
 });

@@ -1,7 +1,7 @@
 import pytest
 
-from kavach.detectors import BankAccountDetector
-from kavach.types import EntityType
+from indimasq.detectors import BankAccountDetector
+from indimasq.types import EntityType
 
 
 @pytest.fixture

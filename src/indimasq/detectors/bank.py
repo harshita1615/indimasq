@@ -11,9 +11,9 @@ from __future__ import annotations
 
 import re
 
-from kavach.context import has_context
-from kavach.detectors.base import Detector
-from kavach.types import Detection, EntityType
+from indimasq.context import has_context
+from indimasq.detectors.base import Detector
+from indimasq.types import Detection, EntityType
 
 _PATTERN = re.compile(
     # Not glued to a word, a "+" (phone prefix) or a dash-joined number.

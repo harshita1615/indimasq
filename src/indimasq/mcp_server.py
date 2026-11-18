@@ -1,7 +1,7 @@
 """MCP server: lets an AI assistant check and redact Indian PII.
 
-    pip install "kavach-pii[mcp]"
-    kavach-mcp --root C:\\data        # stdio; add it to Claude Desktop, Claude Code, ...
+    pip install "indimasq[mcp]"
+    indimasq-mcp --root C:\\data        # stdio; add it to Claude Desktop, Claude Code, ...
 
 Any text the assistant passes to a tool, it has already read. The privacy gain
 is in the file tools: scan_file reports types and positions only, and
@@ -19,17 +19,17 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from kavach import __version__
-from kavach.cli import detection_options
-from kavach.engine import DEFAULT_THRESHOLD
-from kavach.kavach import Kavach
-from kavach.report import build as build_report
+from indimasq import __version__
+from indimasq.cli import detection_options
+from indimasq.engine import DEFAULT_THRESHOLD
+from indimasq.indimasq import IndiMasq
+from indimasq.report import build as build_report
 
 MAX_FILE_BYTES = 10 * 1024 * 1024
-INSTALL_HINT = 'Kavach\'s MCP server needs the mcp extra: pip install "kavach-pii[mcp]"'
+INSTALL_HINT = 'IndiMasq\'s MCP server needs the mcp extra: pip install "indimasq[mcp]"'
 
 INSTRUCTIONS = (
-    "Kavach detects Indian personal data (Aadhaar, PAN, UPI ID, IFSC, bank account, phone, "
+    "IndiMasq detects Indian personal data (Aadhaar, PAN, UPI ID, IFSC, bank account, phone, "
     "GSTIN, email) and replaces it with placeholders such as [PAN_1]. Before reading a file that "
     "may contain customer or personal data, call scan_file; if it finds anything, call "
     "redact_file and read the redacted copy instead of the original. Before sending text "
@@ -112,7 +112,7 @@ def build_server(
     entities: list[str] | None = None,
     threshold: float = DEFAULT_THRESHOLD,
 ):
-    """The MCP server with Kavach's tools. Requires the mcp extra."""
+    """The MCP server with IndiMasq's tools. Requires the mcp extra."""
     try:
         from mcp.server.mcpserver import MCPServer
         from mcp.server.mcpserver.exceptions import ToolError
@@ -121,18 +121,18 @@ def build_server(
         raise ImportError(INSTALL_HINT) from None
 
     # Redact mode: placeholders without a mapping, so nothing is ever restorable.
-    kavach = Kavach(entities=entities, mode="redact", threshold=threshold)
+    indimasq = IndiMasq(entities=entities, mode="redact", threshold=threshold)
 
     def redact(text: str) -> tuple[str, dict[str, int]]:
-        session = kavach.session()
+        session = indimasq.session()
         return session.mask(text), session.counts
 
     server = MCPServer(
-        name="kavach",
-        title="Kavach: Indian PII shield",
+        name="indimasq",
+        title="IndiMasq: Indian PII shield",
         instructions=INSTRUCTIONS,
         version=__version__,
-        website_url="https://github.com/harshita1615/kavach-pii",
+        website_url="https://github.com/harshita1615/indimasq",
     )
     read_only = ToolAnnotations(read_only_hint=True, open_world_hint=False)
     pure = ToolAnnotations(read_only_hint=True, idempotent_hint=True, open_world_hint=False)
@@ -142,7 +142,7 @@ def build_server(
     def scan_text(text: str) -> dict[str, Any]:
         """Find Indian PII in text. Returns each item's type, line, column, character
         offsets and confidence, plus counts per type. Never returns the values."""
-        return build_report(text, kavach.scan(text))
+        return build_report(text, indimasq.scan(text))
 
     @server.tool(annotations=pure)
     def redact_text(text: str) -> dict[str, Any]:
@@ -160,7 +160,7 @@ def build_server(
             resolved, text = workspace.read(path)
         except AccessError as exc:
             raise ToolError(str(exc)) from None
-        return {"file": str(resolved), **build_report(text, kavach.scan(text))}
+        return {"file": str(resolved), **build_report(text, indimasq.scan(text))}
 
     @server.tool(annotations=writes)
     def redact_file(
@@ -189,11 +189,11 @@ def build_server(
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="kavach-mcp",
-        description="Run Kavach as an MCP server over stdio.",
+        prog="indimasq-mcp",
+        description="Run IndiMasq as an MCP server over stdio.",
         parents=[detection_options()],
     )
-    parser.add_argument("--version", action="version", version=f"kavach-mcp {__version__}")
+    parser.add_argument("--version", action="version", version=f"indimasq-mcp {__version__}")
     parser.add_argument(
         "--root",
         action="append",
@@ -212,9 +212,9 @@ def main(argv: list[str] | None = None) -> int:
         workspace = Workspace(args.root or [Path.cwd()])
         server = build_server(workspace, args.entities, args.threshold)
     except FileNotFoundError as exc:
-        raise SystemExit(f"kavach-mcp: error: {exc.filename}: folder not found") from None
+        raise SystemExit(f"indimasq-mcp: error: {exc.filename}: folder not found") from None
     except (ImportError, ValueError) as exc:
-        raise SystemExit(f"kavach-mcp: error: {exc}") from None
+        raise SystemExit(f"indimasq-mcp: error: {exc}") from None
     server.run("stdio")
     return 0
 

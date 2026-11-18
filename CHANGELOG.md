@@ -6,9 +6,16 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- **Renamed from Kavach to IndiMasq**, to avoid confusion with the many other projects called
+  Kavach. The Python package is now `indimasq` (`pip install indimasq`, `from indimasq import
+  IndiMasq`), the commands are `indimasq` and `indimasq-mcp`, and the extension, website and docs
+  use the new name. Releases up to 0.2.0 were published as `kavach-pii`.
+
 ### Added
 
-- Web demo at https://kavach.bigforge.tech/demo/: paste text and see what Kavach finds, masks
+- Web demo at https://indimasq.bigforge.tech/demo/: paste text and see what IndiMasq finds, masks
   and restores, running entirely in the browser with the extension's detection engine.
 - Chrome extension: attached text, Word (.docx) and PDF files (file picker, drag and drop,
   paste) are checked on the device, with an option to attach a safe copy where each value is
@@ -16,7 +23,7 @@ All notable changes to this project are documented here. The format follows
   original text or metadata survives. Locked, scanned and very long PDFs are flagged.
   In files, a value right after its label ("Aadhaar number", "PAN", "Mobile", "UPI ID", "आधार") is
   masked even if it fails the strict checks, since forms label their fields.
-- Chrome extension: placeholders in the chat show their original value on hover, in a Kavach
+- Chrome extension: placeholders in the chat show their original value on hover, in a IndiMasq
   tooltip; the chat page itself keeps the placeholder. The popup lists what was hidden in the
   current chat, from that tab's memory only.
 

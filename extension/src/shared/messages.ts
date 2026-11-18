@@ -5,7 +5,7 @@ import type { Span, TextItem } from "../files/pdf.ts";
 
 /** Read a PDF's text (bytes as base64). */
 export interface PdfReadRequest {
-  readonly type: "kavach-pdf-read";
+  readonly type: "indimasq-pdf-read";
   readonly pdf: string;
 }
 
@@ -21,14 +21,14 @@ export type PdfReadResponse =
  * the spans of its pageText() text with their placeholders. The boxes are
  * worked out while drawing, measured with the PDF's own fonts. */
 export interface PdfRenderRequest {
-  readonly type: "kavach-pdf-render";
+  readonly type: "indimasq-pdf-render";
   readonly pdf: string;
   readonly spans: Span[][];
 }
 
 export type PdfRenderResponse = { readonly ok: true; readonly pdf: string } | { readonly ok: false };
 
-export type OffscreenRequest = (PdfReadRequest | PdfRenderRequest) & { readonly target?: "kavach-offscreen" };
+export type OffscreenRequest = (PdfReadRequest | PdfRenderRequest) & { readonly target?: "indimasq-offscreen" };
 
 /** Bytes to base64 and back, in chunks (messages carry text, not bytes). */
 export function toBase64(bytes: Uint8Array): string {

@@ -1,5 +1,5 @@
 /**
- * Entity detectors, ported from kavach/detectors/*.py.
+ * Entity detectors, ported from indimasq/detectors/*.py.
  *
  * Each pattern is a line-by-line port of its Python counterpart; see the
  * Python files for format sources and design notes. Behaviour is pinned by
@@ -202,7 +202,7 @@ export const email = simple(
   (value) => value.toLowerCase(),
 );
 
-/** In the same order as kavach.detectors.ALL_DETECTORS. */
+/** In the same order as indimasq.detectors.ALL_DETECTORS. */
 export const ALL_DETECTORS: readonly Detector[] = [
   aadhaar,
   pan,
