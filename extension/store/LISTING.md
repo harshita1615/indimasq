@@ -21,7 +21,10 @@ When you paste or send a message on ChatGPT, Claude or Gemini, Kavach checks it 
 • Send anyway: send it as it is.
 • Cancel: go back and edit.
 
-When the AI replies with [PAN_1] or [PHONE_1], Kavach shows the real values again on your screen, highlighted, so the reply reads naturally. The AI still never sees them. You can turn this off in the popup.
+When the AI replies with [PAN_1] or [PHONE_1], point at the placeholder to see the real value in a small Kavach tooltip. The chat page and the AI never get it. The popup also lists what was hidden in the current chat.
+
+FILES TOO
+Attach a PDF, Word document or text file and Kavach checks it on your device first. If it holds personal details, Kavach offers a safe copy with each value replaced by a placeholder like [PAN_1]. PDF copies are redrawn as page pictures, so the original text cannot be recovered from them. Locked or scanned PDFs are flagged so you can decide.
 
 WHAT IT DETECTS
 • Aadhaar numbers (checked with the official Verhoeff check digit)
@@ -36,7 +39,7 @@ It understands English, Hinglish and Hindi context: "mera aadhaar", "khata numbe
 
 PRIVATE BY DESIGN
 • Runs entirely on your device. Kavach makes no network requests at all.
-• Your messages are never stored, logged or sent anywhere.
+• Your messages and files are never stored, logged or sent anywhere. The PDF reader (PDF.js) is built into the extension; nothing is downloaded.
 • It only works on chatgpt.com, claude.ai and gemini.google.com, nowhere else.
 • It stores only on/off settings and counts like "PAN: 3", which you can reset.
 • Open source (MIT): https://github.com/harshita1615/kavach-pii
@@ -72,12 +75,17 @@ Kavach warns users before they send Indian personal data (Aadhaar, PAN, UPI ID, 
 
 **Permission justification: storage**
 ```
-Saves the user's on/off choice for each supported site, whether to show real values in replies, and the number of items caught per type (for example "PAN: 3"), shown in the popup. Only these flags and counts are stored, locally on the device. No message text or personal data is stored.
+Saves the user's on/off choice for each supported site, whether to check attached files and to show real values on hover, and the number of items caught per type (for example "PAN: 3"), shown in the popup. Only these flags and counts are stored, locally on the device. No message text or personal data is stored.
 ```
 
 **Permission justification: host permissions (content script on chatgpt.com, claude.ai, gemini.google.com)**
 ```
-The extension must read the text in the message box on these three AI chat sites at the moment the user pastes or sends, to check it for personal data and offer to mask it before it is submitted. After masking, it also reads the chat on that page to find its own placeholders (such as [PAN_1]) and show the original values in their place, on the user's screen only. It runs on no other sites. All processing happens locally; nothing is transmitted.
+The extension must read the text in the message box on these three AI chat sites at the moment the user pastes or sends, to check it for personal data and offer to mask it before it is submitted. It also reads files the user attaches there (text, Word, PDF), to check them the same way. After masking, it reads the chat on that page to find its own placeholders (such as [PAN_1]) and show the original value in a tooltip when the user points at one, on the user's screen only. It runs on no other sites. All processing happens locally; nothing is transmitted.
+```
+
+**Permission justification: offscreen**
+```
+PDF files attached in the chat are checked for personal data with PDF.js, which is bundled inside the extension. PDF.js needs a worker and a page to draw on, which content scripts cannot provide; the offscreen document does. It only opens the file it is given, returns its text or a safe copy with the personal details covered, keeps nothing, and closes itself when idle. Nothing is downloaded or transmitted.
 ```
 
 **Are you using remote code?** No, I am not using remote code.

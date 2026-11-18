@@ -10,6 +10,15 @@ All notable changes to this project are documented here. The format follows
 
 - Web demo at https://kavach.bigforge.tech/demo/: paste text and see what Kavach finds, masks
   and restores, running entirely in the browser with the extension's detection engine.
+- Chrome extension: attached text, Word (.docx) and PDF files (file picker, drag and drop,
+  paste) are checked on the device, with an option to attach a safe copy where each value is
+  replaced by the chat's placeholder. PDF copies are redrawn as page pictures, so none of the
+  original text or metadata survives. Locked, scanned and very long PDFs are flagged.
+  In files, a value right after its label ("Aadhaar number", "PAN", "Mobile", "UPI ID", "आधार") is
+  masked even if it fails the strict checks, since forms label their fields.
+- Chrome extension: placeholders in the chat show their original value on hover, in a Kavach
+  tooltip; the chat page itself keeps the placeholder. The popup lists what was hidden in the
+  current chat, from that tab's memory only.
 
 ## [0.2.0] - 2026-10-16
 

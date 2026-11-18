@@ -1,59 +1,232 @@
 {
-  "ext_name": { "message": "कवच: AI चैट के लिए निजी जानकारी की सुरक्षा" },
+  "ext_name": {
+    "message": "कवच: AI चैट के लिए निजी जानकारी की सुरक्षा"
+  },
   "ext_description": {
     "message": "ChatGPT, Claude या Gemini को आधार, पैन, यूपीआई, बैंक या फ़ोन की जानकारी जाने से पहले चेताता और छिपाता है। आपके डिवाइस पर ही चलता है।"
   },
-
-  "entity_AADHAAR_one": { "message": "आधार नंबर" },
-  "entity_AADHAAR_other": { "message": "आधार नंबर" },
-  "entity_PAN_one": { "message": "पैन" },
-  "entity_PAN_other": { "message": "पैन" },
-  "entity_UPI_one": { "message": "यूपीआई आईडी" },
-  "entity_UPI_other": { "message": "यूपीआई आईडी" },
-  "entity_IFSC_one": { "message": "IFSC कोड" },
-  "entity_IFSC_other": { "message": "IFSC कोड" },
-  "entity_BANK_ACCOUNT_one": { "message": "बैंक खाता नंबर" },
-  "entity_BANK_ACCOUNT_other": { "message": "बैंक खाता नंबर" },
-  "entity_PHONE_one": { "message": "फ़ोन नंबर" },
-  "entity_PHONE_other": { "message": "फ़ोन नंबर" },
-  "entity_GSTIN_one": { "message": "जीएसटीआईएन" },
-  "entity_GSTIN_other": { "message": "जीएसटीआईएन" },
-  "entity_EMAIL_one": { "message": "ईमेल पता" },
-  "entity_EMAIL_other": { "message": "ईमेल पते" },
-  "list_and": { "message": "और" },
-
+  "entity_AADHAAR_one": {
+    "message": "आधार नंबर"
+  },
+  "entity_AADHAAR_other": {
+    "message": "आधार नंबर"
+  },
+  "entity_PAN_one": {
+    "message": "पैन"
+  },
+  "entity_PAN_other": {
+    "message": "पैन"
+  },
+  "entity_UPI_one": {
+    "message": "यूपीआई आईडी"
+  },
+  "entity_UPI_other": {
+    "message": "यूपीआई आईडी"
+  },
+  "entity_IFSC_one": {
+    "message": "IFSC कोड"
+  },
+  "entity_IFSC_other": {
+    "message": "IFSC कोड"
+  },
+  "entity_BANK_ACCOUNT_one": {
+    "message": "बैंक खाता नंबर"
+  },
+  "entity_BANK_ACCOUNT_other": {
+    "message": "बैंक खाता नंबर"
+  },
+  "entity_PHONE_one": {
+    "message": "फ़ोन नंबर"
+  },
+  "entity_PHONE_other": {
+    "message": "फ़ोन नंबर"
+  },
+  "entity_GSTIN_one": {
+    "message": "जीएसटीआईएन"
+  },
+  "entity_GSTIN_other": {
+    "message": "जीएसटीआईएन"
+  },
+  "entity_EMAIL_one": {
+    "message": "ईमेल पता"
+  },
+  "entity_EMAIL_other": {
+    "message": "ईमेल पते"
+  },
+  "list_and": {
+    "message": "और"
+  },
   "banner_send_title": {
     "message": "इस संदेश में $SUMMARY$ है।",
-    "placeholders": { "summary": { "content": "$1" } }
+    "placeholders": {
+      "summary": {
+        "content": "$1"
+      }
+    }
   },
   "banner_paste_title": {
     "message": "चिपकाए गए टेक्स्ट में $SUMMARY$ है।",
-    "placeholders": { "summary": { "content": "$1" } }
+    "placeholders": {
+      "summary": {
+        "content": "$1"
+      }
+    }
   },
   "banner_body": {
     "message": "छिपाएँ दबाने पर ये [PAN_1] जैसे प्लेसहोल्डर से बदल जाते हैं, ब्राउज़र से कुछ भी बाहर जाने से पहले।"
   },
-  "btn_mask": { "message": "छिपाएँ" },
-  "btn_send_anyway": { "message": "फिर भी भेजें" },
-  "btn_paste_anyway": { "message": "फिर भी चिपकाएँ" },
-  "btn_cancel": { "message": "रद्द करें" },
-  "notice_masked": { "message": "छिपा दिया गया। संदेश जाँचें, फिर भेजें।" },
+  "btn_mask": {
+    "message": "छिपाएँ"
+  },
+  "btn_send_anyway": {
+    "message": "फिर भी भेजें"
+  },
+  "btn_paste_anyway": {
+    "message": "फिर भी चिपकाएँ"
+  },
+  "btn_cancel": {
+    "message": "रद्द करें"
+  },
+  "notice_masked": {
+    "message": "छिपा दिया गया। संदेश जाँचें, फिर भेजें।"
+  },
   "masked_note": {
     "message": "(कवच: [ब्रैकेट] वाली जानकारी निजी है और छिपाई गई है। इन्हें वैसे ही रखें।)"
   },
-
-  "popup_tagline": { "message": "AI चैट के लिए निजी जानकारी की सुरक्षा" },
-  "popup_sites": { "message": "इन साइटों पर सुरक्षा" },
-  "popup_replies": { "message": "AI के जवाब" },
-  "popup_restore": { "message": "जवाब में असली जानकारी दिखाएँ" },
-  "popup_restore_hint": { "message": "[PAN_1] जैसे प्लेसहोल्डर सिर्फ़ आपकी स्क्रीन पर असली जानकारी में बदले जाते हैं। AI को असली जानकारी कभी नहीं दिखती।" },
-  "popup_caught": { "message": "अब तक पकड़ी गई जानकारी" },
-  "popup_none_caught": { "message": "अभी तक कुछ नहीं पकड़ा गया।" },
-  "popup_reset": { "message": "गिनती रीसेट करें" },
+  "btn_upload_redacted": {
+    "message": "सुरक्षित कॉपी जोड़ें"
+  },
+  "btn_upload_anyway": {
+    "message": "फिर भी जोड़ें"
+  },
+  "notice_redacted": {
+    "message": "निजी जानकारी बदलकर कॉपी जोड़ी गई। भेजने से पहले जाँच लें।"
+  },
+  "popup_tagline": {
+    "message": "AI चैट के लिए निजी जानकारी की सुरक्षा"
+  },
+  "popup_sites": {
+    "message": "इन साइटों पर सुरक्षा"
+  },
+  "popup_replies": {
+    "message": "AI के जवाब"
+  },
+  "popup_restore": {
+    "message": "माउस ले जाने पर असली जानकारी दिखाएँ"
+  },
+  "popup_restore_hint": {
+    "message": "चैट में [PAN_1] जैसे प्लेसहोल्डर पर माउस ले जाएँ, असली जानकारी दिखेगी। यह सिर्फ़ आपको दिखती है; चैट पेज और AI को कभी नहीं मिलती।"
+  },
+  "popup_caught": {
+    "message": "अब तक पकड़ी गई जानकारी"
+  },
+  "popup_none_caught": {
+    "message": "अभी तक कुछ नहीं पकड़ा गया।"
+  },
+  "popup_reset": {
+    "message": "गिनती रीसेट करें"
+  },
   "popup_privacy": {
     "message": "पूरी तरह आपके डिवाइस पर चलता है। कवच आपके संदेश कहीं नहीं भेजता और सिर्फ़ यही गिनती सहेजता है।"
   },
   "popup_limits": {
     "message": "कवच जोखिम कम करता है, पर कुछ छूट भी सकता है। भेजने से पहले जाँच लें।"
+  },
+  "popup_chat": {
+    "message": "यह चैट"
+  },
+  "popup_chat_hint": {
+    "message": "सिर्फ़ इस टैब की मेमोरी में रहता है। टैब बंद या रीलोड करने पर हट जाता है।"
+  },
+  "notice_checking_file": {
+    "message": "कवच आपके डिवाइस पर फ़ाइल जाँच रहा है…"
+  },
+  "notice_file_clean": {
+    "message": "कवच ने फ़ाइल जाँच ली: कोई निजी जानकारी नहीं मिली।"
+  },
+  "notice_file_failed": {
+    "message": "कवच यह फ़ाइल पढ़ नहीं सका, इसलिए इसकी जाँच नहीं हुई।"
+  },
+  "banner_file_title": {
+    "message": "इस फ़ाइल में $SUMMARY$ है।",
+    "placeholders": {
+      "summary": {
+        "content": "$1"
+      }
+    }
+  },
+  "banner_files_title": {
+    "message": "इन फ़ाइलों में $SUMMARY$ है।",
+    "placeholders": {
+      "summary": {
+        "content": "$1"
+      }
+    }
+  },
+  "banner_file_body": {
+    "message": "कवच इन्हें [PAN_1] जैसे प्लेसहोल्डर से बदलकर एक कॉपी जोड़ सकता है। AI को असली जानकारी कभी नहीं दिखती। PDF की कॉपी पेज की तस्वीरों से बनती है, इसलिए उसका टेक्स्ट चुना नहीं जा सकता।"
+  },
+  "notice_redact_failed": {
+    "message": "कवच सुरक्षित कॉपी नहीं बना सका, इसलिए कुछ भी नहीं जोड़ा गया।"
+  },
+  "popup_files": {
+    "message": "फ़ाइलें"
+  },
+  "popup_files_check": {
+    "message": "जोड़ी गई फ़ाइलें जाँचें"
+  },
+  "popup_files_hint": {
+    "message": "आधार, PAN और दूसरी जानकारी ढूँढने के लिए टेक्स्ट, Word और PDF फ़ाइलें आपके डिवाइस पर ही पढ़ता है।"
+  },
+  "problem_locked": {
+    "message": "\"$NAME$\" पासवर्ड से लॉक है, इसलिए कवच इसे जाँच नहीं सका।",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "problem_too_long": {
+    "message": "\"$NAME$\" कवच के जाँचने के लिए बहुत लंबी है (30 से ज़्यादा पेज)।",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "problem_damaged": {
+    "message": "कवच \"$NAME$\" को जाँचने के लिए खोल नहीं सका।",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "problem_no_text": {
+    "message": "\"$NAME$\" में पढ़ने लायक टेक्स्ट नहीं है (शायद स्कैन की हुई है), इसलिए कवच इसे जाँच नहीं सका।",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "problem_body": {
+    "message": "अगर इसमें आधार कार्ड या बैंक स्टेटमेंट जैसी निजी जानकारी है, तो AI से साझा करने से पहले सोच लें।"
+  },
+  "note_files_unchecked": {
+    "message": "जाँच नहीं हुई: $NAME$।",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "note_pages_unchecked": {
+    "message": "पेज $PAGES$ स्कैन की हुई तस्वीरें हैं और इनकी जाँच नहीं हुई।",
+    "placeholders": {
+      "pages": {
+        "content": "$1"
+      }
+    }
   }
 }

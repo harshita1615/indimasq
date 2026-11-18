@@ -5,8 +5,8 @@
  * it stops the paste or send and asks: Mask, Paste/Send anyway, or Cancel.
  * Everything happens in this page; nothing is sent anywhere. One masking
  * session per tab keeps placeholders consistent across messages in a chat, and
- * lets placeholders in the AI's replies be shown with their original values
- * again, on this screen only.
+ * lets the user point at a placeholder in the chat to see its original value,
+ * on this screen only. The popup can list this tab's placeholders too.
  */
 
 import { type EntityType, Kavach } from "../core/index.ts";
@@ -14,9 +14,11 @@ import { t } from "../shared/i18n.ts";
 import { hasNote, withNote } from "../shared/note.ts";
 import { addCaught, defaults, load, onChange } from "../shared/settings.ts";
 import { looksLikeSendButton, type Site, siteForHost } from "../shared/sites.ts";
-import { countByType, summarize } from "../shared/summary.ts";
+import { countByType, entityLabel, summarize, type TabFinds } from "../shared/summary.ts";
 import { close, showNotice, showWarning } from "./banner.ts";
-import { type Restorer, startRestoring } from "./restore.ts";
+import { installAttachmentChecks, isOwnEvent } from "./attachments.ts";
+import { labelledFields, withLabelled } from "../files/labelled.ts";
+import { type Revealer, startRevealing } from "./restore.ts";
 import {
   appendAtEnd,
   composerFrom,
@@ -56,16 +58,18 @@ function start(site: Site): void {
     handler: (event: DocumentEventMap[K]) => void,
     _capture: true,
   ): void {
-    document.addEventListener(
+    // On the window, in the capture phase, registered before the page's own
+    // scripts run (document_start): Kavach sees paste, drop and file events first.
+    window.addEventListener(
       type,
-      (event) => {
+      (event: Event) => {
         if (!alive()) {
           lifetime.abort();
           close();
           return;
         }
         try {
-          handler(event);
+          handler(event as DocumentEventMap[K]);
         } catch (error) {
           if (alive()) throw error;
           lifetime.abort();
@@ -76,10 +80,10 @@ function start(site: Site): void {
     );
   }
 
-  let restorer: Restorer | undefined;
+  let revealer: Revealer | undefined;
   const update = (s: typeof settings): void => {
     settings = s;
-    restorer?.scan(); // e.g. "show real values" was just switched back on
+    revealer?.scan(); // e.g. "show real values" was just switched back on
   };
   load().then(update, () => {});
   try {
@@ -89,11 +93,12 @@ function start(site: Site): void {
   }
   const enabled = () => settings.enabled[site.id];
 
-  restorer = startRestoring(
+  revealer = startRevealing(
     (placeholder) => {
       const value = session.unmask(placeholder);
       return value === placeholder ? undefined : value;
     },
+    entityLabel,
     () => {
       if (!alive()) {
         lifetime.abort();
@@ -101,14 +106,24 @@ function start(site: Site): void {
       }
       return masked && enabled() && settings.restore;
     },
-    site.userMessage,
   );
-  lifetime.signal.addEventListener("abort", () => restorer?.stop());
+  lifetime.signal.addEventListener("abort", () => revealer?.stop());
 
-  /** Mask text with this tab's session; placeholders in the chat can then be restored. */
+  // The popup asks this tab what it has hidden, to list it for the user.
+  chrome.runtime.onMessage.addListener((message: { type?: string }, sender, sendResponse) => {
+    if (message?.type !== "kavach-list" || sender.id !== chrome.runtime.id || sender.tab) return;
+    const reply: TabFinds = {
+      text: session.entries().map(([placeholder, value]) => ({ placeholder, label: entityLabel(placeholder), value })),
+    };
+    sendResponse(reply);
+  });
+
+  /** Mask text with this tab's session; placeholders in the chat can then be revealed. */
   function mask(text: string): string {
     masked = true;
-    return session.mask(text);
+    const out = session.mask(text);
+    revealer?.scan();
+    return out;
   }
 
   function record(counts: ReadonlyMap<EntityType, number>): void {
@@ -131,12 +146,42 @@ function start(site: Site): void {
     return [...document.querySelectorAll("button")].find(isSendButton) ?? null;
   }
 
+  // --- attached files (registered first: a file paste must not reach the text check) ---
+
+  installAttachmentChecks({
+    listen,
+    enabled: () => enabled() && settings.files,
+    record,
+    // Files also count labelled fields ("Aadhaar number: ...") that fail the
+    // strict checks; see files/labelled.ts. Chat messages keep the strict rules.
+    count: (text) => countByType(withLabelled(kavach.scan(text), labelledFields(text))),
+    masker: {
+      mask: (text) => {
+        let out = "";
+        let last = 0;
+        for (const r of fileSpans(text).replacements) {
+          out += text.slice(last, r.start) + r.placeholder;
+          last = r.end;
+        }
+        return out + text.slice(last);
+      },
+      maskSpans: fileSpans,
+    },
+  });
+
+  function fileSpans(text: string) {
+    masked = true;
+    const out = session.maskSpans(text, labelledFields(text));
+    revealer?.scan();
+    return out;
+  }
+
   // --- paste -----------------------------------------------------------------------
 
   listen(
     "paste",
     (event) => {
-      if (!enabled()) return;
+      if (!enabled() || isOwnEvent(event)) return;
       const composer = composerFrom(event.target);
       const text = event.clipboardData?.getData("text/plain") ?? "";
       if (!composer || !text) return;

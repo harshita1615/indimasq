@@ -1,8 +1,8 @@
 /**
  * Settings and counters in chrome.storage.local.
  *
- * Stored: an on/off flag per site, whether to show real values in replies, and
- * how many items of each type were caught. Never any text, value or URL.
+ * Stored: an on/off flag per site, whether to check attached files and to show real
+ * values in replies, and how many items of each type were caught. Never any text, value or URL.
  */
 
 import type { EntityType } from "../core/index.ts";
@@ -12,6 +12,8 @@ export interface Settings {
   enabled: Record<Site["id"], boolean>;
   /** Swap placeholders in the chat back to the original values, on screen only. */
   restore: boolean;
+  /** Read attached files (text, Word, PDF) on this device and check them too. */
+  files: boolean;
   caught: Partial<Record<EntityType, number>>;
 }
 
@@ -21,6 +23,7 @@ export function defaults(): Settings {
   return {
     enabled: Object.fromEntries(SITES.map((s) => [s.id, true])) as Settings["enabled"],
     restore: true,
+    files: true,
     caught: {},
   };
 }
@@ -32,6 +35,7 @@ export function merge(stored: unknown): Settings {
   return {
     enabled: { ...base.enabled, ...(s.enabled ?? {}) },
     restore: typeof s.restore === "boolean" ? s.restore : base.restore,
+    files: typeof s.files === "boolean" ? s.files : base.files,
     caught: { ...(s.caught ?? {}) },
   };
 }

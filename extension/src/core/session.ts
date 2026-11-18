@@ -51,24 +51,42 @@ export class MaskingSession {
   }
 
   mask(text: string): string {
-    const detections = this.#engine.analyze(text);
+    const { replacements } = this.maskSpans(text);
+    let out = "";
+    let last = 0;
+    for (const r of replacements) {
+      out += text.slice(last, r.start) + r.placeholder;
+      last = r.end;
+    }
+    return out + text.slice(last);
+  }
+
+  /** Like mask(), but returns where each placeholder goes ([start, end) in
+   * `text`, UTF-16 offsets) instead of the masked text. For documents whose
+   * text is spread over several pieces, such as the runs of a Word paragraph.
+   *
+   * `extra` adds detections found by other means (labelled fields in attached
+   * files); any that overlap the engine's own detections are dropped. */
+  maskSpans(
+    text: string,
+    extra: readonly Detection[] = [],
+  ): { replacements: { start: number; end: number; placeholder: string }[] } {
+    const found = this.#engine.analyze(text);
+    const added = extra.filter(
+      (x) => this.#engine.entities.has(x.entityType) && !found.some((d) => x.start < d.end && d.start < x.end),
+    );
+    const detections = [...found, ...added].sort((a, b) => a.start - b.start);
     for (const d of detections) {
       this.#counts.set(d.entityType, (this.#counts.get(d.entityType) ?? 0) + 1);
     }
-    if (this.mode === "scan" || detections.length === 0) return text;
+    if (this.mode === "scan" || detections.length === 0) return { replacements: [] };
 
     // Placeholder-like strings already in the input are never reused.
     const taken = new Set([...text.matchAll(PLACEHOLDER)].map((m) => placeholderKey(m[1]!, m[2]!)));
-    let out = "";
-    let last = 0;
-    for (const d of detections) {
-      out += text.slice(last, d.start) + this.#placeholderFor(d, text, taken);
-      last = d.end;
-    }
-    out += text.slice(last);
+    const replacements = detections.map((d) => ({ start: d.start, end: d.end, placeholder: this.#placeholderFor(d, text, taken) }));
 
     if (this.mode === "redact") this.#forgetMapping();
-    return out;
+    return { replacements };
   }
 
   /** Replace known placeholders with their original values. Unknown
@@ -78,6 +96,12 @@ export class MaskingSession {
     return text.replace(PLACEHOLDER, (whole, type: string, number: string) => {
       return this.#placeholderToValue.get(placeholderKey(type, number)) ?? whole;
     });
+  }
+
+  /** Placeholders created so far with their original values, oldest first.
+   * For showing the user their own data (the extension popup); never log it. */
+  entries(): [placeholder: string, value: string][] {
+    return [...this.#placeholderToValue];
   }
 
   /** Forget all mappings and counts. */

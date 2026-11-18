@@ -1,59 +1,232 @@
 {
-  "ext_name": { "message": "Kavach: Indian PII shield for AI chats" },
+  "ext_name": {
+    "message": "Kavach: Indian PII shield for AI chats"
+  },
   "ext_description": {
     "message": "Warns before you send Aadhaar, PAN, UPI, bank or phone details to ChatGPT, Claude or Gemini, and masks them. Runs on your device."
   },
-
-  "entity_AADHAAR_one": { "message": "Aadhaar number" },
-  "entity_AADHAAR_other": { "message": "Aadhaar numbers" },
-  "entity_PAN_one": { "message": "PAN" },
-  "entity_PAN_other": { "message": "PANs" },
-  "entity_UPI_one": { "message": "UPI ID" },
-  "entity_UPI_other": { "message": "UPI IDs" },
-  "entity_IFSC_one": { "message": "IFSC code" },
-  "entity_IFSC_other": { "message": "IFSC codes" },
-  "entity_BANK_ACCOUNT_one": { "message": "bank account number" },
-  "entity_BANK_ACCOUNT_other": { "message": "bank account numbers" },
-  "entity_PHONE_one": { "message": "phone number" },
-  "entity_PHONE_other": { "message": "phone numbers" },
-  "entity_GSTIN_one": { "message": "GSTIN" },
-  "entity_GSTIN_other": { "message": "GSTINs" },
-  "entity_EMAIL_one": { "message": "email address" },
-  "entity_EMAIL_other": { "message": "email addresses" },
-  "list_and": { "message": "and" },
-
+  "entity_AADHAAR_one": {
+    "message": "Aadhaar number"
+  },
+  "entity_AADHAAR_other": {
+    "message": "Aadhaar numbers"
+  },
+  "entity_PAN_one": {
+    "message": "PAN"
+  },
+  "entity_PAN_other": {
+    "message": "PANs"
+  },
+  "entity_UPI_one": {
+    "message": "UPI ID"
+  },
+  "entity_UPI_other": {
+    "message": "UPI IDs"
+  },
+  "entity_IFSC_one": {
+    "message": "IFSC code"
+  },
+  "entity_IFSC_other": {
+    "message": "IFSC codes"
+  },
+  "entity_BANK_ACCOUNT_one": {
+    "message": "bank account number"
+  },
+  "entity_BANK_ACCOUNT_other": {
+    "message": "bank account numbers"
+  },
+  "entity_PHONE_one": {
+    "message": "phone number"
+  },
+  "entity_PHONE_other": {
+    "message": "phone numbers"
+  },
+  "entity_GSTIN_one": {
+    "message": "GSTIN"
+  },
+  "entity_GSTIN_other": {
+    "message": "GSTINs"
+  },
+  "entity_EMAIL_one": {
+    "message": "email address"
+  },
+  "entity_EMAIL_other": {
+    "message": "email addresses"
+  },
+  "list_and": {
+    "message": "and"
+  },
   "banner_send_title": {
     "message": "This message contains $SUMMARY$.",
-    "placeholders": { "summary": { "content": "$1" } }
+    "placeholders": {
+      "summary": {
+        "content": "$1"
+      }
+    }
   },
   "banner_paste_title": {
     "message": "The pasted text contains $SUMMARY$.",
-    "placeholders": { "summary": { "content": "$1" } }
+    "placeholders": {
+      "summary": {
+        "content": "$1"
+      }
+    }
   },
   "banner_body": {
     "message": "Mask replaces them with placeholders like [PAN_1] before anything leaves your browser."
   },
-  "btn_mask": { "message": "Mask" },
-  "btn_send_anyway": { "message": "Send anyway" },
-  "btn_paste_anyway": { "message": "Paste anyway" },
-  "btn_cancel": { "message": "Cancel" },
-  "notice_masked": { "message": "Masked. Check the message, then send it." },
+  "btn_mask": {
+    "message": "Mask"
+  },
+  "btn_send_anyway": {
+    "message": "Send anyway"
+  },
+  "btn_paste_anyway": {
+    "message": "Paste anyway"
+  },
+  "btn_cancel": {
+    "message": "Cancel"
+  },
+  "notice_masked": {
+    "message": "Masked. Check the message, then send it."
+  },
   "masked_note": {
     "message": "(Kavach: values in [brackets] are hidden personal details. Keep them as they are.)"
   },
-
-  "popup_tagline": { "message": "Indian PII shield for AI chats" },
-  "popup_sites": { "message": "Protect these sites" },
-  "popup_replies": { "message": "AI replies" },
-  "popup_restore": { "message": "Show real values in replies" },
-  "popup_restore_hint": { "message": "Placeholders like [PAN_1] are swapped back on your screen only. The AI never sees the real values." },
-  "popup_caught": { "message": "Items caught so far" },
-  "popup_none_caught": { "message": "Nothing caught yet." },
-  "popup_reset": { "message": "Reset counts" },
+  "btn_upload_redacted": {
+    "message": "Attach safe copy"
+  },
+  "btn_upload_anyway": {
+    "message": "Attach anyway"
+  },
+  "notice_redacted": {
+    "message": "Attached a copy with the personal details replaced. Check it before sending."
+  },
+  "popup_tagline": {
+    "message": "Indian PII shield for AI chats"
+  },
+  "popup_sites": {
+    "message": "Protect these sites"
+  },
+  "popup_replies": {
+    "message": "AI replies"
+  },
+  "popup_restore": {
+    "message": "Show real values on hover"
+  },
+  "popup_restore_hint": {
+    "message": "Point at a placeholder like [PAN_1] in the chat to see its real value. It is shown only to you; the chat page and the AI never get it."
+  },
+  "popup_caught": {
+    "message": "Items caught so far"
+  },
+  "popup_none_caught": {
+    "message": "Nothing caught yet."
+  },
+  "popup_reset": {
+    "message": "Reset counts"
+  },
   "popup_privacy": {
     "message": "Runs entirely on your device. Kavach never sends your messages anywhere, and stores only these counts."
   },
   "popup_limits": {
     "message": "Kavach reduces risk; it can miss things. Check before you send."
+  },
+  "popup_chat": {
+    "message": "This chat"
+  },
+  "popup_chat_hint": {
+    "message": "Kept only in this tab's memory. Gone when you close or reload the tab."
+  },
+  "notice_checking_file": {
+    "message": "Kavach is checking the file on your device…"
+  },
+  "notice_file_clean": {
+    "message": "Kavach checked the file: no personal details found."
+  },
+  "notice_file_failed": {
+    "message": "Kavach could not read this file, so it was not checked."
+  },
+  "banner_file_title": {
+    "message": "The file contains $SUMMARY$.",
+    "placeholders": {
+      "summary": {
+        "content": "$1"
+      }
+    }
+  },
+  "banner_files_title": {
+    "message": "The files contain $SUMMARY$.",
+    "placeholders": {
+      "summary": {
+        "content": "$1"
+      }
+    }
+  },
+  "banner_file_body": {
+    "message": "Kavach can attach a copy with them replaced by placeholders like [PAN_1]. The AI never sees the real values. A PDF copy is made of page pictures, so its text cannot be selected."
+  },
+  "notice_redact_failed": {
+    "message": "Kavach could not make a safe copy, so nothing was attached."
+  },
+  "popup_files": {
+    "message": "Files"
+  },
+  "popup_files_check": {
+    "message": "Check attached files"
+  },
+  "popup_files_hint": {
+    "message": "Reads text, Word and PDF files on your device to find Aadhaar, PAN and other details."
+  },
+  "problem_locked": {
+    "message": "\"$NAME$\" is locked with a password, so Kavach could not check it.",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "problem_too_long": {
+    "message": "\"$NAME$\" is too long for Kavach to check (more than 30 pages).",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "problem_damaged": {
+    "message": "Kavach could not open \"$NAME$\" to check it.",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "problem_no_text": {
+    "message": "\"$NAME$\" has no readable text (it may be scanned), so Kavach could not check it.",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "problem_body": {
+    "message": "If it holds personal details such as an Aadhaar card or a bank statement, think twice before sharing it with the AI."
+  },
+  "note_files_unchecked": {
+    "message": "Not checked: $NAME$.",
+    "placeholders": {
+      "name": {
+        "content": "$1"
+      }
+    }
+  },
+  "note_pages_unchecked": {
+    "message": "Pages $PAGES$ are scanned pictures and were not checked.",
+    "placeholders": {
+      "pages": {
+        "content": "$1"
+      }
+    }
   }
 }

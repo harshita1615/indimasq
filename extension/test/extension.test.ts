@@ -5,9 +5,9 @@ import { test } from "node:test";
 import { Kavach } from "../src/core/index.ts";
 import { looksLikeSendButton, SITES, siteForHost } from "../src/shared/sites.ts";
 import { hasNote, withNote } from "../src/shared/note.ts";
-import { restorePlaceholders } from "../src/shared/restore.ts";
+import { findPlaceholders } from "../src/shared/restore.ts";
 import { merge } from "../src/shared/settings.ts";
-import { countByType, summarize } from "../src/shared/summary.ts";
+import { countByType, entityLabel, summarize } from "../src/shared/summary.ts";
 
 const root = new URL("../", import.meta.url);
 const json = (path: string) => JSON.parse(readFileSync(new URL(path, root), "utf-8"));
@@ -16,16 +16,16 @@ const json = (path: string) => JSON.parse(readFileSync(new URL(path, root), "utf
 
 const manifest = json("manifest.json");
 
-test("manifest asks only for storage and the three chatbot sites", () => {
+test("manifest asks only for storage, an offscreen page for PDFs and the three chatbot sites", () => {
   assert.equal(manifest.manifest_version, 3);
-  assert.deepEqual(manifest.permissions, ["storage"]);
+  assert.deepEqual(manifest.permissions, ["storage", "offscreen"]);
   assert.equal(manifest.host_permissions, undefined);
   assert.equal(manifest.optional_permissions, undefined);
-  assert.equal(manifest.background, undefined);
+  assert.deepEqual(manifest.background, { service_worker: "background.js" });
   assert.equal(manifest.web_accessible_resources, undefined);
   assert.equal(manifest.externally_connectable, undefined);
   assert.equal(manifest.content_security_policy, undefined, "keep the strict MV3 default CSP");
-  const matches = manifest.content_scripts.flatMap((c: { matches: string[] }) => c.matches);
+  const matches = [...new Set(manifest.content_scripts.flatMap((c: { matches: string[] }) => c.matches))];
   assert.deepEqual(matches.sort(), [
     "https://chatgpt.com/*",
     "https://claude.ai/*",
@@ -72,10 +72,6 @@ test("every entity type has singular and plural names in every locale", () => {
 });
 
 // --- sites ---------------------------------------------------------------------------
-
-test("every site says where the user's own messages are, so they keep their placeholders", () => {
-  for (const site of SITES) assert.ok(site.userMessage.length > 0, site.id);
-});
 
 test("siteForHost", () => {
   assert.equal(siteForHost("chatgpt.com")?.id, "chatgpt");
@@ -153,7 +149,7 @@ test("settings: showing real values in replies is on by default and can be turne
   assert.equal(merge({ restore: "yes" }).restore, true);
 });
 
-// --- restoring replies ---------------------------------------------------------------
+// --- revealing placeholders ---------------------------------------------------------
 
 function sessionLookup() {
   const session = new Kavach().session();
@@ -162,36 +158,41 @@ function sessionLookup() {
     const v = session.unmask(p);
     return v === p ? undefined : v;
   };
-  return { masked, lookup };
+  return { session, masked, lookup };
 }
 
-test("restore swaps this tab's placeholders back and reports where", () => {
+test("finds this tab's placeholders and their values, in place", () => {
   const { masked, lookup } = sessionLookup();
   assert.equal(masked, "My PAN is [PAN_1], refund to [UPI_1]");
   const reply = "Refund for [PAN_1] will go to [UPI_1].";
-  const { text, spans } = restorePlaceholders(reply, lookup);
-  assert.equal(text, "Refund for ABCPE1234F will go to rahul@okaxis.");
+  const found = findPlaceholders(reply, lookup);
   assert.deepEqual(
-    spans.map(([a, b]) => text.slice(a, b)),
-    ["ABCPE1234F", "rahul@okaxis"],
+    found.map((f) => [reply.slice(f.start, f.end), f.value]),
+    [["[PAN_1]", "ABCPE1234F"], ["[UPI_1]", "rahul@okaxis"]],
   );
 });
 
-test("restore tolerates small edits by the AI and leaves unknown placeholders alone", () => {
+test("tolerates small edits by the AI and ignores unknown placeholders", () => {
   const { lookup } = sessionLookup();
-  const { text, spans } = restorePlaceholders("[pan_1], [ UPI_1 ] and [PHONE_9]", lookup);
-  assert.equal(text, "ABCPE1234F, rahul@okaxis and [PHONE_9]");
-  assert.equal(spans.length, 2);
+  const found = findPlaceholders("[pan_1], [ UPI_1 ] and [PHONE_9]", lookup);
+  assert.deepEqual(found.map((f) => f.value), ["ABCPE1234F", "rahul@okaxis"]);
 });
 
-test("restore without placeholders returns the same text", () => {
-  const { lookup } = sessionLookup();
-  const plain = "No placeholders here, just [brackets].";
-  assert.deepEqual(restorePlaceholders(plain, lookup), { text: plain, spans: [] });
-});
-
-test("a fresh session restores nothing", () => {
+test("a fresh session marks nothing", () => {
   const session = new Kavach().session();
   const lookup = (p: string) => (session.unmask(p) === p ? undefined : session.unmask(p));
-  assert.equal(restorePlaceholders("[PAN_1]", lookup).text, "[PAN_1]");
+  assert.deepEqual(findPlaceholders("[PAN_1] and plain [brackets]", lookup), []);
+});
+
+test("the session lists its placeholders for the popup, oldest first", () => {
+  const { session } = sessionLookup();
+  assert.deepEqual(session.entries(), [["[PAN_1]", "ABCPE1234F"], ["[UPI_1]", "rahul@okaxis"]]);
+  assert.deepEqual(new Kavach({ mode: "redact" }).session().entries(), []);
+});
+
+test("entity labels for placeholders", () => {
+  // Outside the extension chrome.i18n is missing, so the label falls back to the message key.
+  assert.equal(entityLabel("[pan_1]"), "Entity_PAN_one");
+  assert.equal(entityLabel("[BANK_ACCOUNT_12]"), "Entity_BANK_ACCOUNT_one");
+  assert.equal(entityLabel("[NOPE_1]"), "[NOPE_1]");
 });

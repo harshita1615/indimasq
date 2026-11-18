@@ -56,11 +56,11 @@
   <body>
     <main>
       <h1>Kavach Privacy Policy</h1>
-      <p class="muted">Kavach browser extension · Effective 4 November 2026</p>
+      <p class="muted">Kavach browser extension · Effective 18 November 2026</p>
 
       <div class="summary">
-        <strong>In short:</strong> Kavach checks the text you paste or send on ChatGPT, Claude and
-        Gemini <strong>on your own device</strong>. It does not collect, store, sell or transmit your
+        <strong>In short:</strong> Kavach checks the text you paste or send, and the files you
+        attach, on ChatGPT, Claude and Gemini <strong>on your own device</strong>. It does not collect, store, sell or transmit your
         messages or any personal data. It makes no network requests at all.
       </div>
 
@@ -89,16 +89,49 @@
           tab's memory only and disappears when you close or reload the tab.
         </li>
         <li>
-          After you mask something, Kavach looks for its placeholders in the chatbot's replies on that
-          page, such as <code>[PAN_1]</code>, and shows the original values in their place on your
-          screen. Your own sent messages keep their placeholders, so they show what was sent. This happens only in that tab and only for
-          placeholders Kavach created there; nothing is sent to the chatbot or anyone else. The
-          values then appear in the chat page like any text you type there. You can turn this off
-          with <strong>Show real values in replies</strong> in the popup.
+          After you mask something, Kavach underlines its placeholders in the chat, such as
+          <code>[PAN_1]</code> in a reply. When you point at one, Kavach shows the original value in
+          its own small tooltip. The chat page keeps the placeholder: the value is not put into the
+          page, and nothing is sent to the chatbot or anyone else. You can turn this off with
+          <strong>Show real values on hover</strong> in the popup.
+        </li>
+        <li>
+          The popup's <strong>This chat</strong> list shows the placeholders and values of the tab you
+          are looking at. It is read from that tab's memory when you open the popup and is never
+          saved.
         </li>
         <li>
           Kavach does not run on any other website and does not read your browsing history. It does
           not store or send the chat's contents.
+        </li>
+      </ul>
+
+      <h2>How attached files are handled</h2>
+      <ul>
+        <li>
+          When you attach a text, Word (.docx) or PDF file (with the file picker, by dragging it in,
+          or by pasting it), Kavach reads its text on your device. PDFs are opened with PDF.js,
+          which is bundled inside the extension. Nothing is downloaded and nothing is uploaded by
+          Kavach.
+        </li>
+        <li>
+          The file is held back from the chat page until the check finishes (usually a second or
+          two). If Kavach finds personal details, you choose: attach a safe copy, attach the
+          original, or cancel.
+        </li>
+        <li>
+          In a safe copy, each value is replaced by a placeholder such as <code>[PAN_1]</code>. A
+          Word or text file keeps its formatting. A PDF is redrawn as page pictures with each value
+          covered by its placeholder, so none of the original text, metadata, form fields, comments
+          or attachments is carried over.
+        </li>
+        <li>
+          Locked (password-protected), scanned or very long PDFs cannot be checked: Kavach says so,
+          and you decide.
+        </li>
+        <li>
+          Files and their text are processed in memory only, inside the extension, and never stored.
+          You can turn file checks off with <strong>Check attached files</strong> in the popup.
         </li>
       </ul>
 
@@ -112,9 +145,9 @@
           <td>Remembers where you want protection</td>
         </tr>
         <tr>
-          <td>Whether to show real values in replies</td>
+          <td>Whether to check attached files and to show real values on hover</td>
           <td>On</td>
-          <td>Remembers your choice from the popup</td>
+          <td>Remembers your choices from the popup</td>
         </tr>
         <tr>
           <td>Count of items caught, by type</td>

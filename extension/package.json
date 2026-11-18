@@ -1,6 +1,6 @@
 {
   "name": "kavach-extension",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "Kavach browser extension: warns before Indian PII is sent to AI chatbots. Runs fully on-device.",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "node": ">=22.18"
   },
   "scripts": {
-    "test": "node --test \"test/**/*.test.ts\"",
+    "test": "node --test test/core.test.ts test/extension.test.ts test/files.test.ts test/parity.test.ts test/privacy.test.ts",
     "typecheck": "tsc",
     "build": "node scripts/build.mjs",
     "build:demo": "node scripts/build-demo.mjs",
@@ -20,6 +20,7 @@
     "@types/chrome": "^0.3.5",
     "@types/node": "^22.18.0",
     "esbuild-wasm": "^0.28.2",
+    "pdfjs-dist": "^5.7.284",
     "typescript": "^5.9.2"
   }
 }

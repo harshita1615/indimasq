@@ -25,6 +25,14 @@ const EVERYWHERE = [
   "document.cookie",
 ];
 const CORE_ONLY = ["chrome."];
+// PDF checks pass the file to the extension's own offscreen page, so these two
+// files may message within the extension; only in the one-argument form, which
+// cannot address another extension.
+const INTERNAL_MESSAGING = new Set(["content/attachments.ts", "background/background.ts"]);
+const OWN_MESSAGE = /chrome\.runtime\.sendMessage\(request\)/g;
+// The popup asks the active tab what it has hidden, to show the user; the tab
+// answers only this extension (see content/index.ts).
+const POPUP_TAB_QUERY = /chrome\.tabs\.(?:query|sendMessage)\(/g;
 // A URL inside a string literal could be fetched or loaded; URLs in comments are fine.
 const URL_STRING = /["'`]\s*(?:https?:)?\/\//;
 
@@ -39,7 +47,9 @@ function files(dir: URL, prefix = ""): { path: string; url: URL }[] {
 
 for (const file of files(SRC).filter((f) => /\.(ts|html)$/.test(f.path))) {
   test(`${file.path}: no logging, network, remote code or extra storage`, () => {
-    const source = readFileSync(file.url, "utf-8");
+    let source = readFileSync(file.url, "utf-8");
+    if (INTERNAL_MESSAGING.has(file.path)) source = source.replace(OWN_MESSAGE, "");
+    if (file.path === "popup/popup.ts") source = source.replace(POPUP_TAB_QUERY, "");
     const forbidden = file.path.startsWith("core/") ? [...EVERYWHERE, ...CORE_ONLY] : EVERYWHERE;
     for (const token of forbidden) {
       assert.ok(!source.includes(token), `${file.path} contains ${token}`);

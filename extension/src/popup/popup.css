@@ -79,6 +79,19 @@ section {
   padding: 4px 0;
 }
 
+.finds .label {
+  color: var(--muted);
+  margin-right: 12px;
+}
+
+.finds .value {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 12px;
+  user-select: all;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
 .count {
   font-variant-numeric: tabular-nums;
   font-weight: 600;

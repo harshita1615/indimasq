@@ -1,30 +1,26 @@
-/** Swap known placeholders in a piece of text back to their original values.
+/** Find this tab's placeholders in a piece of text.
  *
- * Pure function: the content script applies it to the chat page, and the tests
- * call it directly. `lookup` returns the original value for a placeholder, or
- * undefined for one this tab never created (left as it is). */
+ * Pure function: the content script uses it to mark placeholders in the chat
+ * (hover to see the original), and the tests call it directly. `lookup`
+ * returns the original value for a placeholder, or undefined for one this tab
+ * never created (ignored). */
 
 import { PLACEHOLDER } from "../core/session.ts";
 
-export interface Restored {
-  readonly text: string;
-  /** [start, end) of each restored value in `text`, in UTF-16 offsets. */
-  readonly spans: readonly (readonly [number, number])[];
+export interface FoundPlaceholder {
+  /** [start, end) of the placeholder in the text, in UTF-16 offsets. */
+  readonly start: number;
+  readonly end: number;
+  readonly placeholder: string;
+  readonly value: string;
 }
 
-export function restorePlaceholders(text: string, lookup: (placeholder: string) => string | undefined): Restored {
+export function findPlaceholders(text: string, lookup: (placeholder: string) => string | undefined): FoundPlaceholder[] {
   const pattern = new RegExp(PLACEHOLDER.source, PLACEHOLDER.flags);
-  const spans: [number, number][] = [];
-  let out = "";
-  let last = 0;
+  const found: FoundPlaceholder[] = [];
   for (const m of text.matchAll(pattern)) {
     const value = lookup(m[0]);
-    if (value === undefined) continue;
-    out += text.slice(last, m.index);
-    spans.push([out.length, out.length + value.length]);
-    out += value;
-    last = m.index + m[0].length;
+    if (value !== undefined) found.push({ start: m.index, end: m.index + m[0].length, placeholder: m[0], value });
   }
-  if (spans.length === 0) return { text, spans };
-  return { text: out + text.slice(last), spans };
+  return found;
 }

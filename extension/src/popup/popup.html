@@ -15,9 +15,29 @@
       </div>
     </header>
 
+    <section id="chat" hidden>
+      <h2 data-i18n="popup_chat"></h2>
+      <ul id="chat-list" class="list finds"></ul>
+      <p class="muted" data-i18n="popup_chat_hint"></p>
+    </section>
+
     <section>
       <h2 data-i18n="popup_sites"></h2>
       <ul id="sites" class="list"></ul>
+    </section>
+
+    <section>
+      <h2 data-i18n="popup_files"></h2>
+      <ul class="list">
+        <li>
+          <span id="files-label" data-i18n="popup_files_check"></span>
+          <label class="switch">
+            <input id="files" type="checkbox" aria-labelledby="files-label" />
+            <span></span>
+          </label>
+        </li>
+      </ul>
+      <p class="muted" data-i18n="popup_files_hint"></p>
     </section>
 
     <section>

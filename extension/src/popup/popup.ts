@@ -4,6 +4,7 @@ import { ENTITY_TYPES } from "../core/types.ts";
 import { t } from "../shared/i18n.ts";
 import { load, onChange, save, type Settings } from "../shared/settings.ts";
 import { SITES } from "../shared/sites.ts";
+import type { TabFinds } from "../shared/summary.ts";
 
 document.documentElement.lang = chrome.i18n.getUILanguage();
 for (const el of document.querySelectorAll<HTMLElement>("[data-i18n]")) {
@@ -15,6 +16,13 @@ const caughtList = document.getElementById("caught")!;
 const none = document.getElementById("none")!;
 const reset = document.getElementById("reset")!;
 const restore = document.getElementById("restore") as HTMLInputElement;
+const files = document.getElementById("files") as HTMLInputElement;
+
+files.addEventListener("change", async () => {
+  const latest = await load();
+  latest.files = files.checked;
+  await save(latest);
+});
 
 restore.addEventListener("change", async () => {
   const latest = await load();
@@ -24,6 +32,7 @@ restore.addEventListener("change", async () => {
 
 function render(settings: Settings): void {
   restore.checked = settings.restore;
+  files.checked = settings.files;
   sitesList.replaceChildren(
     ...SITES.map((site) => {
       const li = document.createElement("li");
@@ -75,5 +84,35 @@ reset.addEventListener("click", async () => {
   await save(settings);
 });
 
+/** What the current chat tab has hidden. Asked from that tab's own memory;
+ * nothing is stored. Empty on any other page. */
+async function showChat(): Promise<void> {
+  let finds: TabFinds | undefined;
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (tab?.id !== undefined) finds = await chrome.tabs.sendMessage(tab.id, { type: "kavach-list" });
+  } catch {
+    return; // not a chatbot tab, or Kavach has not loaded there
+  }
+  if (!finds || finds.text.length === 0) return;
+  const rows = finds.text.map((f) => row(f.label, f.value, f.placeholder));
+  document.getElementById("chat-list")!.replaceChildren(...rows);
+  document.getElementById("chat")!.hidden = false;
+}
+
+function row(label: string, value: string, title?: string): HTMLLIElement {
+  const li = document.createElement("li");
+  const name = document.createElement("span");
+  name.className = "label";
+  name.textContent = label;
+  if (title) name.title = title;
+  const v = document.createElement("span");
+  v.className = "value";
+  v.textContent = value;
+  li.append(name, v);
+  return li;
+}
+
+showChat();
 load().then(render);
 onChange(render);
